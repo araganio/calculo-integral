@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>6. Integración Directa · Cálculo Integral</title>
+
+  <!-- Librerías externas (CDN): KaTeX para fórmulas y Plotly para gráficas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
+
+  <!-- Código propio -->
+  <link rel="stylesheet" href="../../assets/css/styles.css">
+  <script defer src="../../assets/js/modulos.js"></script>
+  <script defer src="../../assets/js/layout.js"></script>
+  <script defer src="../../assets/js/funciones.js"></script>
+  <script defer src="../../assets/js/metodos-numericos.js"></script>
+  <script defer src="../../assets/js/visualizador.js"></script>
+  <script defer src="script.js"></script>
+</head>
+<body data-raiz="../../" data-modulo="6">
+  <main>
+    <header class="cabecera-modulo">
+      <p class="migas">Módulo 6 · Fase 1 · Integral indefinida</p>
+      <h1>Integración Directa</h1>
+      <p>Integrar es "derivar al revés": buscar una función $F$ cuya derivada sea $f$. Con la regla de la potencia y la linealidad se resuelven muchas integrales sin ningún método especial.</p>
+      <nav class="indice-secciones" aria-label="Secciones del módulo">
+        <a href="#teoria">1. Teoría</a>
+        <a href="#visualizador">2. Visualizador</a>
+        <a href="#ejemplos">3. Ejemplos resueltos</a>
+      </nav>
+    </header>
+
+    <!-- ===================== 1. TEORÍA ===================== -->
+    <section id="teoria" class="seccion">
+      <h2><span class="paso">1</span> Teoría</h2>
+      <p>La <strong>integral indefinida</strong> de $f$ es la familia de todas sus antiderivadas:</p>
+      <div class="caja-formula">$$\int f(x)\,dx = F(x) + C \quad \Longleftrightarrow \quad F'(x) = f(x)$$</div>
+      <p>La constante $C$ aparece porque la derivada de una constante es cero: $x^2$, $x^2 + 5$ y $x^2 - 3$ tienen la misma derivada $2x$.</p>
+
+      <h3>Reglas básicas</h3>
+      <ul>
+        <li><strong>Regla de la potencia</strong> (sumar 1 al exponente y dividir entre el nuevo exponente):
+          $$\int x^n\,dx = \frac{x^{n+1}}{n+1} + C, \qquad n \neq -1$$</li>
+        <li><strong>El caso $n = -1$</strong>:
+          $$\int \frac{dx}{x} = \ln|x| + C$$</li>
+        <li><strong>Linealidad</strong> (las constantes salen y la integral de una suma es la suma de las integrales):
+          $$\int \big[a\,f(x) \pm b\,g(x)\big]\,dx = a\int f(x)\,dx \pm b\int g(x)\,dx$$</li>
+        <li><strong>Constante</strong>: $\displaystyle\int k\,dx = kx + C$.</li>
+      </ul>
+      <div class="nota"><strong>Truco:</strong> antes de integrar, reescribe raíces y fracciones como potencias: $\sqrt{x} = x^{1/2}$, $\dfrac{1}{\sqrt{x}} = x^{-1/2}$, $\dfrac{1}{x^2} = x^{-2}$. Y comprueba siempre tu resultado <strong>derivándolo</strong>.</div>
+    </section>
+
+    <!-- ===================== 2. VISUALIZADOR ===================== -->
+    <section id="visualizador" class="seccion">
+      <h2><span class="paso">2</span> <span>Visualizador interactivo: $f(x)$ y su antiderivada $F(x) + C$</span></h2>
+      <p>Mueve $C$ y observa que la antiderivada solo se <strong>desplaza verticalmente</strong>: su forma (y por lo tanto su pendiente en cada punto, que es $f(x)$) no cambia. Por eso todas las curvas de la familia son antiderivadas válidas.</p>
+      <div class="visualizador">
+        <div id="controles" class="controles">
+          <div class="control">
+            <label for="control-ejemplo">Ejemplo a graficar</label>
+            <select id="control-ejemplo"></select>
+          </div>
+          <div class="control">
+            <label for="control-c">Constante C = <span id="valor-c" class="valor-deslizador"></span></label>
+            <input id="control-c" type="range" min="-10" max="10" step="0.5" value="0">
+          </div>
+          <div class="control">
+            <label><input id="control-familia" type="checkbox" checked> Mostrar la familia F(x) + C</label>
+          </div>
+          <div class="control">
+            <label for="control-x">Punto para comparar pendientes: x = <span id="valor-x" class="valor-deslizador"></span></label>
+            <input id="control-x" type="range" min="0" max="100" step="1" value="50">
+            <span class="ayuda">La recta tangente a F en ese punto tiene pendiente f(x).</span>
+          </div>
+        </div>
+        <div>
+          <div id="grafica" class="grafica" role="img" aria-label="Gráfica de f(x) y de su antiderivada F(x) + C"></div>
+          <div id="resultados" class="resultados"></div>
+          <p id="formula-exacta"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 3. EJEMPLOS ===================== -->
+    <section id="ejemplos" class="seccion">
+      <h2><span class="paso">3</span> Ejemplos resueltos paso a paso</h2>
+
+      <article class="ejemplo">
+        <h3>Ejemplo VI.2 — $\displaystyle\int \left(\frac{3}{x^2} - \frac{9}{\sqrt{x}}\right) dx$</h3>
+        <ol>
+          <li>Reescribimos como potencias:
+            $$\int \left(3x^{-2} - 9x^{-1/2}\right) dx$$</li>
+          <li>Linealidad: separamos y sacamos las constantes:
+            $$3\int x^{-2}\,dx - 9\int x^{-1/2}\,dx$$</li>
+          <li>Regla de la potencia en cada término:
+            $$3\cdot\frac{x^{-1}}{-1} - 9\cdot\frac{x^{1/2}}{1/2} = -3x^{-1} - 18x^{1/2}$$</li>
+          <li>Volvemos a la notación con fracciones y raíces:
+            $$\int \left(\frac{3}{x^2} - \frac{9}{\sqrt{x}}\right) dx = -\frac{3}{x} - 18\sqrt{x} + C$$</li>
+          <li>Comprobación: $\dfrac{d}{dx}\left(-3x^{-1} - 18x^{1/2}\right) = 3x^{-2} - 9x^{-1/2} = \dfrac{3}{x^2} - \dfrac{9}{\sqrt{x}}$ ✔</li>
+        </ol>
+        <p class="resultado-final">$\displaystyle -\frac{3}{x} - 18\sqrt{x} + C$</p>
+      </article>
+
+      <article class="ejemplo">
+        <h3>Ejemplo VI.3 — $\displaystyle\int \left(x + 4\sqrt{x} - \frac{4}{x}\right) dx$</h3>
+        <ol>
+          <li>Reescribimos: $\displaystyle\int \left(x + 4x^{1/2} - 4\cdot\frac{1}{x}\right) dx$.</li>
+          <li>Linealidad:
+            $$\int x\,dx + 4\int x^{1/2}\,dx - 4\int \frac{dx}{x}$$</li>
+          <li>Integramos cada término (el último es el caso $n = -1$):
+            $$\frac{x^2}{2} + 4\cdot\frac{x^{3/2}}{3/2} - 4\ln|x| = \frac{x^2}{2} + \frac{8}{3}x^{3/2} - 4\ln|x|$$</li>
+          <li>Resultado:
+            $$\int \left(x + 4\sqrt{x} - \frac{4}{x}\right) dx = \frac{x^2}{2} + \frac{8}{3}x^{3/2} - 4\ln|x| + C$$</li>
+          <li>Comprobación: $\dfrac{d}{dx}\left(\dfrac{x^2}{2} + \dfrac{8}{3}x^{3/2} - 4\ln|x|\right) = x + 4x^{1/2} - \dfrac{4}{x}$ ✔</li>
+        </ol>
+        <p class="resultado-final">$\displaystyle \frac{x^2}{2} + \frac{8}{3}x^{3/2} - 4\ln|x| + C$</p>
+      </article>
+
+      <article class="ejemplo">
+        <h3>Ejemplo VI.5 — $\displaystyle\int (x - 1)(x + 1)\,dx$</h3>
+        <ol>
+          <li>No existe una "regla del producto" para integrar, así que primero <strong>expandimos</strong> (diferencia de cuadrados):
+            $$(x - 1)(x + 1) = x^2 - 1$$</li>
+          <li>Integramos término a término:
+            $$\int (x^2 - 1)\,dx = \frac{x^3}{3} - x + C$$</li>
+          <li>Comprobación: $\dfrac{d}{dx}\left(\dfrac{x^3}{3} - x\right) = x^2 - 1 = (x-1)(x+1)$ ✔</li>
+        </ol>
+        <p class="resultado-final">$\displaystyle \frac{x^3}{3} - x + C$</p>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

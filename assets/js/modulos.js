@@ -1,0 +1,46 @@
+/**
+ * modulos.js — Lista única de los 14 módulos de la plataforma.
+ *
+ * Es la "fuente de verdad" del sitio: el menú de navegación, las tarjetas
+ * de la página de inicio y los botones "Anterior / Siguiente" se generan
+ * a partir de este arreglo. Para agregar o activar un módulo en la
+ * Fase 2 o 3 solo hay que editar este archivo (y crear su carpeta).
+ *
+ * Campos de cada módulo:
+ *  - numero:      número del módulo (1 a 14)
+ *  - carpeta:     nombre de la carpeta dentro de /modulos
+ *  - nombre:      título que se muestra en el menú y en las tarjetas
+ *  - fase:        fase del proyecto en la que se desarrolla (1, 2 o 3)
+ *  - disponible:  true si el módulo ya está desarrollado
+ *  - descripcion: frase corta para la tarjeta del inicio
+ */
+const MODULOS = [
+  { numero: 1, carpeta: '01-sumas-riemann', nombre: 'Sumas de Riemann', fase: 1, disponible: true,
+    descripcion: 'Aproxima el área con rectángulos: sumas izquierda, derecha y de punto medio.' },
+  { numero: 2, carpeta: '02-regla-trapecio', nombre: 'Regla del Trapecio', fase: 1, disponible: true,
+    descripcion: 'Reemplaza los rectángulos por trapecios para una mejor aproximación.' },
+  { numero: 3, carpeta: '03-regla-punto-medio', nombre: 'Regla del Punto Medio', fase: 1, disponible: true,
+    descripcion: 'Rectángulos cuya altura se toma en el centro de cada subintervalo.' },
+  { numero: 4, carpeta: '04-regla-simpson', nombre: 'Regla de Simpson', fase: 1, disponible: true,
+    descripcion: 'Ajusta parábolas cada dos subintervalos; muy precisa con pocos puntos.' },
+  { numero: 5, carpeta: '05-integral-definida-area', nombre: 'Integral Definida y Área', fase: 1, disponible: true,
+    descripcion: 'Teorema Fundamental del Cálculo, área bajo la curva y área entre curvas.' },
+  { numero: 6, carpeta: '06-integracion-directa', nombre: 'Integración Directa', fase: 1, disponible: true,
+    descripcion: 'Regla de la potencia, linealidad y la familia de antiderivadas F(x) + C.' },
+  { numero: 7, carpeta: '07-sustitucion', nombre: 'Integración por Sustitución', fase: 2, disponible: false,
+    descripcion: 'Cambio de variable u = g(x) para simplificar integrales.' },
+  { numero: 8, carpeta: '08-exponenciales', nombre: 'Integrales Exponenciales', fase: 2, disponible: false,
+    descripcion: 'Integrales con funciones de la forma eˣ y aˣ.' },
+  { numero: 9, carpeta: '09-logaritmicas', nombre: 'Integrales Logarítmicas', fase: 2, disponible: false,
+    descripcion: 'Integrales que conducen a ln|u|.' },
+  { numero: 10, carpeta: '10-trigonometricas', nombre: 'Integrales Trigonométricas', fase: 2, disponible: false,
+    descripcion: 'Integrales de seno, coseno, tangente y sus potencias.' },
+  { numero: 11, carpeta: '11-trigonometricas-inversas', nombre: 'Trigonométricas Inversas', fase: 3, disponible: false,
+    descripcion: 'Integrales que dan como resultado arcsen, arctan y arcsec.' },
+  { numero: 12, carpeta: '12-hiperbolicas-inversas', nombre: 'Hiperbólicas Inversas', fase: 3, disponible: false,
+    descripcion: 'Integrales que dan como resultado funciones hiperbólicas inversas.' },
+  { numero: 13, carpeta: '13-trinomio-cuadratico', nombre: 'Trinomio Cuadrático', fase: 3, disponible: false,
+    descripcion: 'Completar el cuadrado para integrar expresiones ax² + bx + c.' },
+  { numero: 14, carpeta: '14-integracion-por-partes', nombre: 'Integración por Partes', fase: 3, disponible: false,
+    descripcion: 'La fórmula ∫u dv = uv − ∫v du y sus aplicaciones.' }
+];

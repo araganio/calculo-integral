@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>1. Sumas de Riemann · Cálculo Integral</title>
+
+  <!-- Librerías externas (CDN): KaTeX para fórmulas y Plotly para gráficas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
+
+  <!-- Código propio -->
+  <link rel="stylesheet" href="../../assets/css/styles.css">
+  <script defer src="../../assets/js/modulos.js"></script>
+  <script defer src="../../assets/js/layout.js"></script>
+  <script defer src="../../assets/js/funciones.js"></script>
+  <script defer src="../../assets/js/metodos-numericos.js"></script>
+  <script defer src="../../assets/js/visualizador.js"></script>
+  <script defer src="script.js"></script>
+</head>
+<body data-raiz="../../" data-modulo="1">
+  <main>
+    <header class="cabecera-modulo">
+      <p class="migas">Módulo 1 · Fase 1 · Métodos numéricos</p>
+      <h1>Sumas de Riemann</h1>
+      <p>La idea más básica para calcular el área bajo una curva: llenarla con rectángulos y sumar sus áreas. Entre más rectángulos, mejor la aproximación.</p>
+      <nav class="indice-secciones" aria-label="Secciones del módulo">
+        <a href="#teoria">1. Teoría</a>
+        <a href="#visualizador">2. Visualizador</a>
+        <a href="#ejemplos">3. Ejemplos resueltos</a>
+      </nav>
+    </header>
+
+    <!-- ===================== 1. TEORÍA ===================== -->
+    <section id="teoria" class="seccion">
+      <h2><span class="paso">1</span> Teoría</h2>
+      <p>Queremos aproximar $\displaystyle\int_a^b f(x)\,dx$. Dividimos el intervalo $[a,b]$ en $n$ subintervalos del mismo ancho:</p>
+      <div class="caja-formula">$$\Delta x = \frac{b-a}{n}, \qquad x_i = a + i\,\Delta x \quad (i = 0, 1, \dots, n)$$</div>
+      <p>Sobre cada subintervalo $[x_{i-1}, x_i]$ levantamos un rectángulo de base $\Delta x$. Lo que cambia entre un tipo de suma y otro es <strong>dónde se mide la altura</strong>:</p>
+      <ul>
+        <li><strong>Suma izquierda</strong> — altura en el extremo izquierdo:
+          $$L_n = \Delta x\,\big[f(x_0) + f(x_1) + \cdots + f(x_{n-1})\big] = \Delta x \sum_{i=0}^{n-1} f(x_i)$$</li>
+        <li><strong>Suma derecha</strong> — altura en el extremo derecho:
+          $$R_n = \Delta x\,\big[f(x_1) + f(x_2) + \cdots + f(x_n)\big] = \Delta x \sum_{i=1}^{n} f(x_i)$$</li>
+        <li><strong>Suma de punto medio</strong> — altura en el centro $\bar x_i = \frac{x_{i-1}+x_i}{2}$:
+          $$M_n = \Delta x \sum_{i=1}^{n} f(\bar x_i)$$</li>
+      </ul>
+      <p>La integral definida es el límite de estas sumas cuando el número de rectángulos crece sin límite:</p>
+      <div class="caja-formula">$$\int_a^b f(x)\,dx = \lim_{n\to\infty} \sum_{i=1}^{n} f(x_i^*)\,\Delta x$$</div>
+      <div class="nota">Si $f$ es <strong>creciente</strong>, la suma izquierda se queda corta ($L_n$ subestima) y la derecha se pasa ($R_n$ sobreestima). Si $f$ es decreciente ocurre lo contrario. Compruébalo con $x^2$ y con $1/x$ en el visualizador.</div>
+    </section>
+
+    <!-- ===================== 2. VISUALIZADOR ===================== -->
+    <section id="visualizador" class="seccion">
+      <h2><span class="paso">2</span> Visualizador interactivo</h2>
+      <p>Elige la función, los límites, el tipo de suma y mueve el deslizador de $n$. Observa cómo el área de los rectángulos se acerca al valor exacto.</p>
+      <div class="visualizador">
+        <!-- Los controles los crea visualizador.js -->
+        <div id="controles" class="controles"></div>
+        <div>
+          <div id="grafica" class="grafica" role="img" aria-label="Gráfica de la función con los rectángulos de la suma de Riemann"></div>
+          <div id="resultados" class="resultados"></div>
+          <p id="formula-exacta"></p>
+          <h3>Convergencia: aproximación vs. $n$</h3>
+          <p>Cada punto es la suma calculada con ese $n$. La línea roja es el valor exacto: al aumentar $n$ la suma se acerca a ella.</p>
+          <div id="grafica-convergencia" class="grafica grafica-pequena" role="img" aria-label="Gráfica de la aproximación en función de n"></div>
+          <details class="detalle-tabla">
+            <summary>Ver tabla de valores</summary>
+            <div class="contenedor-tabla"><table id="tabla" class="tabla"></table></div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 3. EJEMPLOS ===================== -->
+    <section id="ejemplos" class="seccion">
+      <h2><span class="paso">3</span> Ejemplos resueltos paso a paso</h2>
+
+      <article class="ejemplo">
+        <h3>Ejemplo I.1 — $\displaystyle\int_0^2 x^2\,dx$ con $n = 4$</h3>
+        <ol>
+          <li>Ancho de cada subintervalo: $\Delta x = \dfrac{2-0}{4} = 0.5$.</li>
+          <li>Nodos: $x_0=0$, $x_1=0.5$, $x_2=1$, $x_3=1.5$, $x_4=2$ con valores $f(x_i)$: $0$, $0.25$, $1$, $2.25$, $4$.</li>
+          <li>Suma izquierda (usa $x_0$ a $x_3$):
+            $$L_4 = 0.5\,(0 + 0.25 + 1 + 2.25) = 0.5 \cdot 3.5 = 1.75$$</li>
+          <li>Suma derecha (usa $x_1$ a $x_4$):
+            $$R_4 = 0.5\,(0.25 + 1 + 2.25 + 4) = 0.5 \cdot 7.5 = 3.75$$</li>
+          <li>Punto medio: $\bar x_i = 0.25$, $0.75$, $1.25$, $1.75$ con $f(\bar x_i) = 0.0625$, $0.5625$, $1.5625$, $3.0625$:
+            $$M_4 = 0.5\,(0.0625 + 0.5625 + 1.5625 + 3.0625) = 0.5 \cdot 5.25 = 2.625$$</li>
+          <li>Valor exacto con el TFC:
+            $$\int_0^2 x^2\,dx = \left[\frac{x^3}{3}\right]_0^2 = \frac{8}{3} \approx 2.6667$$</li>
+        </ol>
+        <p class="resultado-final">$L_4 = 1.75$ (se queda corta), $R_4 = 3.75$ (se pasa), $M_4 = 2.625$ (error de solo $0.0417$). Exacto: $\frac{8}{3} \approx 2.6667$.</p>
+      </article>
+
+      <article class="ejemplo">
+        <h3>Ejemplo I.2 — $\displaystyle\int_1^3 \frac{1}{x}\,dx$ con $n = 5$</h3>
+        <ol>
+          <li>Ancho: $\Delta x = \dfrac{3-1}{5} = 0.4$.</li>
+          <li>Nodos: $1$, $1.4$, $1.8$, $2.2$, $2.6$, $3$ con $f(x_i) = 1$, $0.7143$, $0.5556$, $0.4545$, $0.3846$, $0.3333$.</li>
+          <li>Suma izquierda:
+            $$L_5 = 0.4\,(1 + 0.7143 + 0.5556 + 0.4545 + 0.3846) = 0.4 \cdot 3.1090 = 1.2436$$</li>
+          <li>Suma derecha:
+            $$R_5 = 0.4\,(0.7143 + 0.5556 + 0.4545 + 0.3846 + 0.3333) = 0.4 \cdot 2.4423 = 0.9769$$</li>
+          <li>Punto medio: $\bar x_i = 1.2$, $1.6$, $2$, $2.4$, $2.8$ con $f(\bar x_i) = 0.8333$, $0.625$, $0.5$, $0.4167$, $0.3571$:
+            $$M_5 = 0.4 \cdot 2.7321 = 1.0929$$</li>
+          <li>Valor exacto:
+            $$\int_1^3 \frac{dx}{x} = \big[\ln x\big]_1^3 = \ln 3 - \ln 1 = \ln 3 \approx 1.0986$$</li>
+        </ol>
+        <p class="resultado-final">Como $1/x$ es decreciente, ahora $L_5 = 1.2436$ se pasa y $R_5 = 0.9769$ se queda corta. $M_5 = 1.0929$ es la mejor (error $0.0058$).</p>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

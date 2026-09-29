@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2. Regla del Trapecio · Cálculo Integral</title>
+
+  <!-- Librerías externas (CDN): KaTeX para fórmulas y Plotly para gráficas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
+
+  <!-- Código propio -->
+  <link rel="stylesheet" href="../../assets/css/styles.css">
+  <script defer src="../../assets/js/modulos.js"></script>
+  <script defer src="../../assets/js/layout.js"></script>
+  <script defer src="../../assets/js/funciones.js"></script>
+  <script defer src="../../assets/js/metodos-numericos.js"></script>
+  <script defer src="../../assets/js/visualizador.js"></script>
+  <script defer src="script.js"></script>
+</head>
+<body data-raiz="../../" data-modulo="2">
+  <main>
+    <header class="cabecera-modulo">
+      <p class="migas">Módulo 2 · Fase 1 · Métodos numéricos</p>
+      <h1>Regla del Trapecio</h1>
+      <p>En vez de rectángulos con techo plano, unimos los puntos de la curva con segmentos rectos. Cada franja queda como un trapecio, que se ajusta mucho mejor a la curva.</p>
+      <nav class="indice-secciones" aria-label="Secciones del módulo">
+        <a href="#teoria">1. Teoría</a>
+        <a href="#visualizador">2. Visualizador</a>
+        <a href="#ejemplos">3. Ejemplos resueltos</a>
+      </nav>
+    </header>
+
+    <!-- ===================== 1. TEORÍA ===================== -->
+    <section id="teoria" class="seccion">
+      <h2><span class="paso">1</span> Teoría</h2>
+      <p>Dividimos $[a,b]$ en $n$ subintervalos de ancho $\Delta x = \frac{b-a}{n}$. Sobre cada subintervalo $[x_{i-1}, x_i]$ se forma un trapecio con lados paralelos $f(x_{i-1})$ y $f(x_i)$ y altura $\Delta x$.</p>
+      <h3>Justificación geométrica</h3>
+      <p>El área de un trapecio es el promedio de sus lados paralelos por su altura:</p>
+      <div class="caja-formula">$$A_i = \frac{f(x_{i-1}) + f(x_i)}{2}\,\Delta x$$</div>
+      <p>Al sumar los $n$ trapecios, cada nodo interior aparece <strong>dos veces</strong> (es el lado derecho de un trapecio y el izquierdo del siguiente), mientras que $x_0$ y $x_n$ aparecen una sola vez. Por eso:</p>
+      <div class="caja-formula">$$T_n = \frac{\Delta x}{2}\left[f(x_0) + 2\sum_{i=1}^{n-1} f(x_i) + f(x_n)\right]$$</div>
+      <p>Otra forma de verlo: la regla del trapecio es el <strong>promedio de las sumas izquierda y derecha</strong>:</p>
+      <div class="caja-formula">$$T_n = \frac{L_n + R_n}{2}$$</div>
+      <div class="nota">Si la curva es cóncava hacia arriba (como $x^2$) los trapecios quedan por encima y $T_n$ sobreestima. Si es cóncava hacia abajo (como $\sin x$ en $[0, \pi/2]$) quedan por debajo y $T_n$ subestima.</div>
+    </section>
+
+    <!-- ===================== 2. VISUALIZADOR ===================== -->
+    <section id="visualizador" class="seccion">
+      <h2><span class="paso">2</span> Visualizador interactivo</h2>
+      <p>Cada franja verde es un trapecio. Con pocos subintervalos se nota el espacio entre la curva y los segmentos rectos; al subir $n$ casi desaparece.</p>
+      <div class="visualizador">
+        <div id="controles" class="controles"></div>
+        <div>
+          <div id="grafica" class="grafica" role="img" aria-label="Gráfica de la función con los trapecios"></div>
+          <div id="resultados" class="resultados"></div>
+          <p id="formula-exacta"></p>
+          <details class="detalle-tabla">
+            <summary>Ver tabla de valores</summary>
+            <div class="contenedor-tabla"><table id="tabla" class="tabla"></table></div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 3. EJEMPLOS ===================== -->
+    <section id="ejemplos" class="seccion">
+      <h2><span class="paso">3</span> Ejemplos resueltos paso a paso</h2>
+
+      <article class="ejemplo">
+        <h3>Ejemplo II.1 — $\displaystyle\int_0^2 x^2\,dx$ con $n = 4$</h3>
+        <ol>
+          <li>Ancho: $\Delta x = \dfrac{2-0}{4} = 0.5$, así que $\dfrac{\Delta x}{2} = 0.25$.</li>
+          <li>Nodos y valores: $f(0)=0$, $f(0.5)=0.25$, $f(1)=1$, $f(1.5)=2.25$, $f(2)=4$.</li>
+          <li>Coeficientes: $1, 2, 2, 2, 1$ (los extremos una vez, los interiores dos veces).</li>
+          <li>Aplicamos la fórmula:
+            $$T_4 = 0.25\,\big[0 + 2(0.25) + 2(1) + 2(2.25) + 4\big] = 0.25\,(0 + 0.5 + 2 + 4.5 + 4) = 0.25 \cdot 11 = 2.75$$</li>
+          <li>Comprobación con el promedio: $T_4 = \dfrac{L_4 + R_4}{2} = \dfrac{1.75 + 3.75}{2} = 2.75$ ✔</li>
+          <li>Error: $\left|2.75 - \frac{8}{3}\right| \approx 0.0833$ (se pasa porque $x^2$ es cóncava hacia arriba).</li>
+        </ol>
+        <p class="resultado-final">$T_4 = 2.75$ frente al exacto $\frac{8}{3} \approx 2.6667$.</p>
+      </article>
+
+      <article class="ejemplo">
+        <h3>Ejemplo II.4 — $\displaystyle\int_0^{\pi/2} \sin x\,dx$ con $n = 4$</h3>
+        <ol>
+          <li>Ancho: $\Delta x = \dfrac{\pi/2 - 0}{4} = \dfrac{\pi}{8} \approx 0.3927$, así que $\dfrac{\Delta x}{2} = \dfrac{\pi}{16} \approx 0.1963$.</li>
+          <li>Nodos: $0$, $\frac{\pi}{8}$, $\frac{\pi}{4}$, $\frac{3\pi}{8}$, $\frac{\pi}{2}$ con valores $\sin x_i = 0$, $0.3827$, $0.7071$, $0.9239$, $1$.</li>
+          <li>Aplicamos la fórmula:
+            $$T_4 = \frac{\pi}{16}\big[0 + 2(0.3827 + 0.7071 + 0.9239) + 1\big] = \frac{\pi}{16}\,(5.0274) \approx 0.9871$$</li>
+          <li>Valor exacto:
+            $$\int_0^{\pi/2}\sin x\,dx = \big[-\cos x\big]_0^{\pi/2} = -\cos\tfrac{\pi}{2} + \cos 0 = 0 + 1 = 1$$</li>
+          <li>Error absoluto: $|0.9871 - 1| = 0.0129$, error relativo $\approx 1.29\,\%$ (se queda corta porque $\sin x$ es cóncava hacia abajo).</li>
+        </ol>
+        <p class="resultado-final">$T_4 \approx 0.9871$ frente al exacto $1$.</p>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

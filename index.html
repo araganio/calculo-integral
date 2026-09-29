@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cálculo Integral Interactivo</title>
+  <meta name="description" content="Plataforma web educativa e interactiva de Cálculo Integral — UTP">
+
+  <!-- KaTeX: renderizado de fórmulas matemáticas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script defer src="assets/js/modulos.js"></script>
+  <script defer src="assets/js/layout.js"></script>
+</head>
+<body data-raiz="">
+  <!-- El encabezado y el pie los inserta layout.js -->
+  <main>
+    <section class="hero">
+      <h1>Cálculo Integral Interactivo</h1>
+      <p>Plataforma educativa para aprender Cálculo Integral <strong>viendo</strong> cómo funcionan las cosas: mueve los controles, cambia la función y observa cómo cambian el área, las aproximaciones y el error.</p>
+      <p>Material de estudio abierto para estudiantes de la Universidad Tecnológica de Pereira.</p>
+      <p class="formula-hero">$$\int_a^b f(x)\,dx = \lim_{n\to\infty}\sum_{i=1}^{n} f(x_i^*)\,\Delta x = F(b)-F(a)$$</p>
+    </section>
+
+    <h2>Las tres fases del proyecto</h2>
+    <div class="fases">
+      <article class="fase">
+        <h3>Fase 1 · Parcial 1</h3>
+        <p>Métodos numéricos (Riemann, trapecio, punto medio y Simpson), integral definida, área bajo la curva e integración directa. <strong>Módulos 1–6.</strong></p>
+      </article>
+      <article class="fase fase-2">
+        <h3>Fase 2 · Parcial 2</h3>
+        <p>Sustitución e integrales exponenciales, logarítmicas y trigonométricas. <strong>Módulos 7–10.</strong></p>
+      </article>
+      <article class="fase fase-3">
+        <h3>Fase 3 · Parcial 3</h3>
+        <p>Trigonométricas e hiperbólicas inversas, trinomio cuadrático e integración por partes. <strong>Módulos 11–14.</strong></p>
+      </article>
+    </div>
+
+    <h2>Módulos</h2>
+    <!-- Las 14 tarjetas se generan desde assets/js/modulos.js -->
+    <div id="grilla-modulos" class="grilla-modulos"></div>
+  </main>
+</body>
+</html>

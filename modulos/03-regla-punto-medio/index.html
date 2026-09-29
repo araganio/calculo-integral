@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3. Regla del Punto Medio · Cálculo Integral</title>
+
+  <!-- Librerías externas (CDN): KaTeX para fórmulas y Plotly para gráficas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
+
+  <!-- Código propio -->
+  <link rel="stylesheet" href="../../assets/css/styles.css">
+  <script defer src="../../assets/js/modulos.js"></script>
+  <script defer src="../../assets/js/layout.js"></script>
+  <script defer src="../../assets/js/funciones.js"></script>
+  <script defer src="../../assets/js/metodos-numericos.js"></script>
+  <script defer src="../../assets/js/visualizador.js"></script>
+  <script defer src="script.js"></script>
+</head>
+<body data-raiz="../../" data-modulo="3">
+  <main>
+    <header class="cabecera-modulo">
+      <p class="migas">Módulo 3 · Fase 1 · Métodos numéricos</p>
+      <h1>Regla del Punto Medio</h1>
+      <p>Rectángulos cuya altura se mide justo en el centro de cada subintervalo. Lo que el rectángulo se pasa en un lado lo compensa en el otro, y por eso suele ser más precisa que el trapecio.</p>
+      <nav class="indice-secciones" aria-label="Secciones del módulo">
+        <a href="#teoria">1. Teoría</a>
+        <a href="#visualizador">2. Visualizador</a>
+        <a href="#ejemplos">3. Ejemplos resueltos</a>
+      </nav>
+    </header>
+
+    <!-- ===================== 1. TEORÍA ===================== -->
+    <section id="teoria" class="seccion">
+      <h2><span class="paso">1</span> Teoría</h2>
+      <p>Con $\Delta x = \frac{b-a}{n}$ y los nodos $x_i = a + i\,\Delta x$, el punto medio de cada subintervalo es:</p>
+      <div class="caja-formula">$$\bar x_i = \frac{x_{i-1} + x_i}{2}, \qquad i = 1, 2, \dots, n$$</div>
+      <p>La regla del punto medio suma las áreas de los rectángulos de base $\Delta x$ y altura $f(\bar x_i)$:</p>
+      <div class="caja-formula">$$M_n = \Delta x \sum_{i=1}^{n} f(\bar x_i) = \Delta x\,\big[f(\bar x_1) + f(\bar x_2) + \cdots + f(\bar x_n)\big]$$</div>
+      <h3>¿Por qué funciona tan bien?</h3>
+      <p>En cada subintervalo, la parte del rectángulo que queda por encima de la curva a un lado del punto medio se compensa casi por completo con la parte que falta al otro lado. Por eso su error es aproximadamente la <strong>mitad</strong> del error del trapecio, y con signo contrario:</p>
+      <div class="caja-formula">$$|E_M| \le \frac{K(b-a)^3}{24\,n^2}, \qquad |E_T| \le \frac{K(b-a)^3}{12\,n^2}, \qquad K = \max|f''(x)|$$</div>
+    </section>
+
+    <!-- ===================== 2. VISUALIZADOR ===================== -->
+    <section id="visualizador" class="seccion">
+      <h2><span class="paso">2</span> Visualizador interactivo</h2>
+      <p>Los puntos naranjas marcan el punto medio $\bar x_i$ de cada subintervalo: ahí se toma la altura del rectángulo.</p>
+      <div class="visualizador">
+        <div id="controles" class="controles"></div>
+        <div>
+          <div id="grafica" class="grafica" role="img" aria-label="Gráfica de la función con los rectángulos de punto medio"></div>
+          <div id="resultados" class="resultados"></div>
+          <p id="formula-exacta"></p>
+          <details class="detalle-tabla">
+            <summary>Ver tabla de valores</summary>
+            <div class="contenedor-tabla"><table id="tabla" class="tabla"></table></div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 3. EJEMPLOS ===================== -->
+    <section id="ejemplos" class="seccion">
+      <h2><span class="paso">3</span> Ejemplos resueltos paso a paso</h2>
+
+      <article class="ejemplo">
+        <h3>Ejemplo III.4 — $\displaystyle\int_0^{\pi/2} \cos x\,dx$ con $n = 4$</h3>
+        <ol>
+          <li>Ancho: $\Delta x = \dfrac{\pi/2}{4} = \dfrac{\pi}{8} \approx 0.3927$.</li>
+          <li>Puntos medios: $\bar x_i = \frac{\pi}{16}$, $\frac{3\pi}{16}$, $\frac{5\pi}{16}$, $\frac{7\pi}{16}$.</li>
+          <li>Valores: $\cos\bar x_i = 0.9808$, $0.8315$, $0.5556$, $0.1951$, que suman $2.5630$.</li>
+          <li>Aplicamos la fórmula:
+            $$M_4 = \frac{\pi}{8}\,(0.9808 + 0.8315 + 0.5556 + 0.1951) = \frac{\pi}{8}\,(2.5630) \approx 1.0065$$</li>
+          <li>Valor exacto:
+            $$\int_0^{\pi/2}\cos x\,dx = \big[\sin x\big]_0^{\pi/2} = 1 - 0 = 1$$</li>
+          <li>Error absoluto: $0.0065$ ($0.65\,\%$), la mitad del error del trapecio en el ejemplo II.4.</li>
+        </ol>
+        <p class="resultado-final">$M_4 \approx 1.0065$ frente al exacto $1$.</p>
+      </article>
+
+      <article class="ejemplo">
+        <h3>Ejemplo III.5 — $\displaystyle\int_1^2 \ln x\,dx$ con $n = 4$</h3>
+        <ol>
+          <li>Ancho: $\Delta x = \dfrac{2-1}{4} = 0.25$.</li>
+          <li>Puntos medios: $\bar x_i = 1.125$, $1.375$, $1.625$, $1.875$.</li>
+          <li>Valores: $\ln\bar x_i = 0.1178$, $0.3185$, $0.4855$, $0.6286$, que suman $1.5504$.</li>
+          <li>Aplicamos la fórmula:
+            $$M_4 = 0.25\,(1.5504) \approx 0.3876$$</li>
+          <li>Valor exacto (la antiderivada de $\ln x$ es $x\ln x - x$):
+            $$\int_1^2 \ln x\,dx = \big[x\ln x - x\big]_1^2 = (2\ln 2 - 2) - (0 - 1) = 2\ln 2 - 1 \approx 0.3863$$</li>
+          <li>Error absoluto: $|0.3876 - 0.3863| \approx 0.0013$.</li>
+        </ol>
+        <p class="resultado-final">$M_4 \approx 0.3876$ frente al exacto $2\ln 2 - 1 \approx 0.3863$.</p>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

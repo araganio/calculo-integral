@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>5. Integral Definida y Área · Cálculo Integral</title>
+
+  <!-- Librerías externas (CDN): KaTeX para fórmulas y Plotly para gráficas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
+
+  <!-- Código propio -->
+  <link rel="stylesheet" href="../../assets/css/styles.css">
+  <script defer src="../../assets/js/modulos.js"></script>
+  <script defer src="../../assets/js/layout.js"></script>
+  <script defer src="../../assets/js/funciones.js"></script>
+  <script defer src="../../assets/js/metodos-numericos.js"></script>
+  <script defer src="../../assets/js/visualizador.js"></script>
+  <script defer src="script.js"></script>
+</head>
+<body data-raiz="../../" data-modulo="5">
+  <main>
+    <header class="cabecera-modulo">
+      <p class="migas">Módulo 5 · Fase 1 · Integral definida</p>
+      <h1>Integral Definida y Área bajo la Curva</h1>
+      <p>Los métodos numéricos aproximan; el Teorema Fundamental del Cálculo da el valor <strong>exacto</strong> usando una antiderivada. Aquí también distinguimos entre integral (con signo) y área (siempre positiva).</p>
+      <nav class="indice-secciones" aria-label="Secciones del módulo">
+        <a href="#teoria">1. Teoría</a>
+        <a href="#visualizador">2. Visualizador</a>
+        <a href="#ejemplos">3. Ejemplos resueltos</a>
+      </nav>
+    </header>
+
+    <!-- ===================== 1. TEORÍA ===================== -->
+    <section id="teoria" class="seccion">
+      <h2><span class="paso">1</span> Teoría</h2>
+      <h3>Teorema Fundamental del Cálculo (TFC)</h3>
+      <p>Si $f$ es continua en $[a,b]$ y $F$ es una antiderivada de $f$ (es decir, $F'(x) = f(x)$), entonces:</p>
+      <div class="caja-formula">$$\int_a^b f(x)\,dx = F(b) - F(a) = \Big[F(x)\Big]_a^b$$</div>
+      <p>Esto conecta las dos grandes ideas del cálculo: la derivada y la integral son operaciones inversas. Ya no hace falta sumar infinitos rectángulos: basta con encontrar $F$.</p>
+
+      <h3>Integral con signo vs. área</h3>
+      <p>La integral cuenta <strong>positivo</strong> lo que está sobre el eje $x$ y <strong>negativo</strong> lo que está debajo. Si queremos el área geométrica (siempre positiva) usamos el valor absoluto:</p>
+      <div class="caja-formula">$$A = \int_a^b |f(x)|\,dx$$</div>
+      <p>En la práctica se buscan los puntos donde $f$ corta el eje, se integra por tramos y se toma el valor absoluto de cada tramo.</p>
+
+      <h3>Área entre dos curvas</h3>
+      <p>El área de la región entre $y = f(x)$ y $y = g(x)$ desde $x=a$ hasta $x=b$ es:</p>
+      <div class="caja-formula">$$A = \int_a^b |f(x) - g(x)|\,dx$$</div>
+      <p>Si $f(x) \ge g(x)$ en todo el intervalo, queda $\int_a^b \big[f(x) - g(x)\big]\,dx$: <em>curva de arriba menos curva de abajo</em>. Los límites suelen ser los <strong>puntos de corte</strong>, que se hallan resolviendo $f(x) = g(x)$.</p>
+    </section>
+
+    <!-- ===================== 2. VISUALIZADOR ===================== -->
+    <section id="visualizador" class="seccion">
+      <h2><span class="paso">2</span> Visualizador interactivo</h2>
+      <div class="grupo-botones" style="margin-bottom:1rem">
+        <button type="button" id="modo-area" class="activo" aria-pressed="true">Área bajo la curva</button>
+        <button type="button" id="modo-entre" aria-pressed="false">Área entre curvas</button>
+      </div>
+
+      <div class="visualizador">
+        <div id="controles" class="controles">
+          <!-- Controles del modo "área bajo la curva" -->
+          <div id="panel-area">
+            <div class="control">
+              <label for="control-funcion">Función</label>
+              <select id="control-funcion"></select>
+            </div>
+            <div class="control">
+              <label for="control-a">Límite a = <span id="valor-a" class="valor-deslizador"></span></label>
+              <input id="control-a" type="range" min="-4" max="4" step="0.1" value="0">
+            </div>
+            <div class="control">
+              <label for="control-b">Límite b = <span id="valor-b" class="valor-deslizador"></span></label>
+              <input id="control-b" type="range" min="-4" max="4" step="0.1" value="2">
+            </div>
+            <p class="ayuda">Verde: parte sobre el eje (suma). Rojo: parte bajo el eje (resta en la integral).</p>
+          </div>
+
+          <!-- Controles del modo "área entre curvas" -->
+          <div id="panel-entre" hidden>
+            <div class="control">
+              <label for="control-par">Par de funciones</label>
+              <select id="control-par"></select>
+            </div>
+            <p class="ayuda">Los límites de integración son los puntos de corte (marcados en la gráfica).</p>
+          </div>
+
+          <div id="mensaje-error" class="mensaje-error" role="alert"></div>
+          <div class="control">
+            <span class="ayuda">Cargar un ejemplo resuelto:</span>
+            <div class="grupo-botones">
+              <button type="button" id="ejemplo-v1">Ejemplo V.1</button>
+              <button type="button" id="ejemplo-v4">Ejemplo V.4</button>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div id="grafica" class="grafica" role="img" aria-label="Gráfica del área bajo la curva o entre curvas"></div>
+          <div id="resultados" class="resultados"></div>
+          <p id="formula-exacta"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 3. EJEMPLOS ===================== -->
+    <section id="ejemplos" class="seccion">
+      <h2><span class="paso">3</span> Ejemplos resueltos paso a paso</h2>
+
+      <article class="ejemplo">
+        <h3>Ejemplo V.1 — $\displaystyle\int_0^2 (3x^2 - 2x + 1)\,dx$</h3>
+        <ol>
+          <li>Buscamos una antiderivada término a término con la regla de la potencia:
+            $$\int 3x^2\,dx = x^3, \qquad \int 2x\,dx = x^2, \qquad \int 1\,dx = x$$
+            así que $F(x) = x^3 - x^2 + x$.</li>
+          <li>Comprobamos derivando: $F'(x) = 3x^2 - 2x + 1 = f(x)$ ✔</li>
+          <li>Aplicamos el TFC:
+            $$\int_0^2 (3x^2 - 2x + 1)\,dx = \Big[x^3 - x^2 + x\Big]_0^2 = (8 - 4 + 2) - (0 - 0 + 0) = 6$$</li>
+          <li>Como $3x^2 - 2x + 1 > 0$ para todo $x$ (su discriminante es $4 - 12 < 0$), la curva nunca baja del eje: la integral coincide con el área.</li>
+        </ol>
+        <p class="resultado-final">$\displaystyle\int_0^2 (3x^2 - 2x + 1)\,dx = 6$</p>
+      </article>
+
+      <article class="ejemplo">
+        <h3>Ejemplo V.4 — Área entre $f(x) = x^2$ y $g(x) = 2x$</h3>
+        <ol>
+          <li>Puntos de corte: $x^2 = 2x \Rightarrow x^2 - 2x = 0 \Rightarrow x(x - 2) = 0$, así que $x = 0$ y $x = 2$.</li>
+          <li>¿Cuál está arriba? Probamos $x = 1$: $g(1) = 2 > f(1) = 1$. En $[0, 2]$ la recta $2x$ está por encima de la parábola.</li>
+          <li>Planteamos el área (arriba menos abajo):
+            $$A = \int_0^2 \big(2x - x^2\big)\,dx$$</li>
+          <li>Integramos y evaluamos:
+            $$A = \left[x^2 - \frac{x^3}{3}\right]_0^2 = \left(4 - \frac{8}{3}\right) - 0 = \frac{4}{3} \approx 1.3333$$</li>
+        </ol>
+        <p class="resultado-final">$A = \dfrac{4}{3} \approx 1.3333$ unidades cuadradas.</p>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

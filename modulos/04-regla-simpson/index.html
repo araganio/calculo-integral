@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>4. Regla de Simpson · Cálculo Integral</title>
+
+  <!-- Librerías externas (CDN): KaTeX para fórmulas y Plotly para gráficas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
+
+  <!-- Código propio -->
+  <link rel="stylesheet" href="../../assets/css/styles.css">
+  <script defer src="../../assets/js/modulos.js"></script>
+  <script defer src="../../assets/js/layout.js"></script>
+  <script defer src="../../assets/js/funciones.js"></script>
+  <script defer src="../../assets/js/metodos-numericos.js"></script>
+  <script defer src="../../assets/js/visualizador.js"></script>
+  <script defer src="script.js"></script>
+</head>
+<body data-raiz="../../" data-modulo="4">
+  <main>
+    <header class="cabecera-modulo">
+      <p class="migas">Módulo 4 · Fase 1 · Métodos numéricos</p>
+      <h1>Regla de Simpson</h1>
+      <p>El paso siguiente después de rectángulos y trapecios: aproximar la curva con <strong>parábolas</strong>. Cada parábola pasa por tres puntos de la curva y cubre dos subintervalos.</p>
+      <nav class="indice-secciones" aria-label="Secciones del módulo">
+        <a href="#teoria">1. Teoría</a>
+        <a href="#visualizador">2. Visualizador</a>
+        <a href="#ejemplos">3. Ejemplos resueltos</a>
+      </nav>
+    </header>
+
+    <!-- ===================== 1. TEORÍA ===================== -->
+    <section id="teoria" class="seccion">
+      <h2><span class="paso">1</span> Teoría</h2>
+      <p>Tomamos los subintervalos <strong>de dos en dos</strong>. Por los tres puntos $(x_{i-1}, f(x_{i-1}))$, $(x_i, f(x_i))$ y $(x_{i+1}, f(x_{i+1}))$ pasa exactamente una parábola, y el área bajo esa parábola se puede calcular de forma exacta:</p>
+      <div class="caja-formula">$$\int_{x_{i-1}}^{x_{i+1}} p(x)\,dx = \frac{\Delta x}{3}\big[f(x_{i-1}) + 4f(x_i) + f(x_{i+1})\big]$$</div>
+      <p>Sumando todas las parábolas se obtiene la <strong>regla de Simpson</strong>, con coeficientes $1, 4, 2, 4, 2, \dots, 4, 1$:</p>
+      <div class="caja-formula">$$S_n = \frac{\Delta x}{3}\left[f(x_0) + 4\sum_{i\ \text{impar}} f(x_i) + 2\sum_{i\ \text{par}} f(x_i) + f(x_n)\right]$$</div>
+      <div class="nota"><strong>$n$ debe ser par</strong>, porque cada parábola necesita dos subintervalos. Por eso el deslizador de este módulo avanza de 2 en 2.</div>
+      <p>Su error depende de la cuarta derivada, así que Simpson es <strong>exacta para polinomios de grado 3 o menor</strong> (su cuarta derivada es cero):</p>
+      <div class="caja-formula">$$|E_S| \le \frac{K(b-a)^5}{180\,n^4}, \qquad K = \max|f^{(4)}(x)|$$</div>
+    </section>
+
+    <!-- ===================== 2. VISUALIZADOR ===================== -->
+    <section id="visualizador" class="seccion">
+      <h2><span class="paso">2</span> Visualizador interactivo</h2>
+      <p>Cada franja verde es el área bajo una parábola ajustada por tres nodos (puntos naranjas). Con $n = 2$ se ve una sola parábola; compara su forma con la de la curva.</p>
+      <div class="visualizador">
+        <div id="controles" class="controles"></div>
+        <div>
+          <div id="grafica" class="grafica" role="img" aria-label="Gráfica de la función con las parábolas de Simpson"></div>
+          <div id="resultados" class="resultados"></div>
+          <p id="formula-exacta"></p>
+          <details class="detalle-tabla">
+            <summary>Ver tabla de valores</summary>
+            <div class="contenedor-tabla"><table id="tabla" class="tabla"></table></div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 3. EJEMPLOS ===================== -->
+    <section id="ejemplos" class="seccion">
+      <h2><span class="paso">3</span> Ejemplos resueltos paso a paso</h2>
+
+      <article class="ejemplo">
+        <h3>Ejemplo IV.1 — $\displaystyle\int_0^2 x^2\,dx$ con $n = 4$</h3>
+        <ol>
+          <li>Ancho: $\Delta x = 0.5$, así que $\dfrac{\Delta x}{3} = \dfrac{1}{6}$.</li>
+          <li>Valores: $f(0)=0$, $f(0.5)=0.25$, $f(1)=1$, $f(1.5)=2.25$, $f(2)=4$.</li>
+          <li>Coeficientes: $1, 4, 2, 4, 1$.</li>
+          <li>Aplicamos la fórmula:
+            $$S_4 = \frac{1}{6}\big[0 + 4(0.25) + 2(1) + 4(2.25) + 4\big] = \frac{1}{6}\,(0 + 1 + 2 + 9 + 4) = \frac{16}{6} = \frac{8}{3} \approx 2.6667$$</li>
+          <li>¡Coincide exactamente con $\int_0^2 x^2\,dx = \frac{8}{3}$! No es casualidad: $x^2$ es un polinomio de grado $2 \le 3$, así que la parábola ajustada <em>es</em> la propia curva y el error es cero.</li>
+        </ol>
+        <p class="resultado-final">$S_4 = \frac{8}{3} \approx 2.6667$: resultado exacto, error $0$.</p>
+      </article>
+
+      <article class="ejemplo">
+        <h3>Ejemplo IV.2 — $\displaystyle\int_1^3 \frac{1}{x}\,dx$ con $n = 4$</h3>
+        <ol>
+          <li>Ancho: $\Delta x = \dfrac{3-1}{4} = 0.5$, así que $\dfrac{\Delta x}{3} = \dfrac{1}{6}$.</li>
+          <li>Nodos: $1$, $1.5$, $2$, $2.5$, $3$ con $f(x_i) = 1$, $0.6667$, $0.5$, $0.4$, $0.3333$.</li>
+          <li>Aplicamos la fórmula con coeficientes $1, 4, 2, 4, 1$:
+            $$S_4 = \frac{1}{6}\big[1 + 4(0.6667) + 2(0.5) + 4(0.4) + 0.3333\big] = \frac{1}{6}\,(1 + 2.6667 + 1 + 1.6 + 0.3333) = \frac{6.6}{6} = 1.1000$$</li>
+          <li>Valor exacto: $\ln 3 \approx 1.0986$.</li>
+          <li>Error absoluto: $|1.1 - 1.0986| \approx 0.0014$ ($0.13\,\%$). Con solo 4 subintervalos, mucho mejor que Riemann con 5 (ejemplo I.2).</li>
+        </ol>
+        <p class="resultado-final">$S_4 = 1.1000$ frente al exacto $\ln 3 \approx 1.0986$.</p>
+      </article>
+    </section>
+  </main>
+</body>
+</html>
