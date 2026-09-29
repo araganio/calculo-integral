@@ -169,6 +169,17 @@ Las librerías se cargan desde un CDN, así que se necesita conexión a internet
 
 ---
 
-## Uso de IA
+## Proceso de desarrollo y uso de IA
 
-Este proyecto se desarrolló con ayuda de herramientas de inteligencia artificial (Claude / Claude Code), como permite el enunciado. La IA generó la base del código, los visualizadores y la documentación a partir de una especificación del proyecto. Todos los resultados numéricos se verificaron con la página [`pruebas/`](pruebas/index.html) (19 de 19 coinciden con los valores esperados), y el funcionamiento de la plataforma se explica en el video de sustentación.
+Como permite el enunciado, usé herramientas de inteligencia artificial (Claude / Claude Code) durante el desarrollo.
+
+**Mi trabajo**
+- Definí el proyecto a partir del enunciado, con apoyo de IA: los 14 módulos, las tres fases, las tecnologías y los ejemplos de cada módulo.
+- Dirigí el desarrollo por etapas y revisé la plataforma y sus resultados.
+- Estudié cómo funciona el código (métodos numéricos, gráficas y pruebas) para poder explicarlo.
+- Creé el repositorio y publiqué la plataforma en GitHub Pages.
+- Preparé la sustentación en video, incluida la explicación del ejercicio.
+
+**Apoyo de la IA**
+- Generó la base del código, los visualizadores y la documentación.
+- Los resultados numéricos se verificaron con la página [`pruebas/`](pruebas/index.html) (19 de 19 coinciden con los valores esperados).
