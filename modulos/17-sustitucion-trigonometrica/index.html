@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>17. Sustitución Trigonométrica · Cálculo Integral</title>
+
+  <!-- Librerías externas (CDN): KaTeX para fórmulas y Plotly para gráficas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
+
+  <!-- Código propio -->
+  <link rel="stylesheet" href="../../assets/css/styles.css">
+  <script defer src="../../assets/js/modulos.js"></script>
+  <script defer src="../../assets/js/layout.js"></script>
+  <script defer src="../../assets/js/visualizador.js"></script>
+  <script defer src="../../assets/js/ejemplos-integrales.js"></script>
+  <script defer src="../../assets/js/antiderivadas.js"></script>
+</head>
+<body data-raiz="../../" data-modulo="17">
+  <main>
+    <header class="cabecera-modulo">
+      <p class="migas">Módulo 17 · Fase 3 · Integral indefinida</p>
+      <h1>Sustitución Trigonométrica</h1>
+      <p>Cuando el integrando contiene $\sqrt{a^2 - x^2}$, $\sqrt{a^2 + x^2}$ o $\sqrt{x^2 - a^2}$, se reemplaza $x$ por una función trigonométrica para que la raíz desaparezca con una identidad pitagórica.</p>
+      <nav class="indice-secciones" aria-label="Secciones del módulo">
+        <a href="#teoria">1. Teoría</a>
+        <a href="#visualizador">2. Visualizador</a>
+        <a href="#ejemplos">3. Ejemplos resueltos</a>
+      </nav>
+    </header>
+
+    <!-- ===================== 1. TEORÍA ===================== -->
+    <section id="teoria" class="seccion">
+      <h2><span class="paso">1</span> Teoría</h2>
+      <div class="contenedor-tabla" style="max-height:none">
+        <table class="tabla">
+          <thead><tr><th>Expresión</th><th>Sustitución</th><th>Resultado de la raíz</th></tr></thead>
+          <tbody>
+            <tr><td>$\sqrt{a^2 - x^2}$</td><td>$x = a\sin\theta$,&nbsp; $dx = a\cos\theta\,d\theta$</td><td>$a\cos\theta$</td></tr>
+            <tr><td>$\sqrt{a^2 + x^2}$</td><td>$x = a\tan\theta$,&nbsp; $dx = a\sec^2\theta\,d\theta$</td><td>$a\sec\theta$</td></tr>
+            <tr><td>$\sqrt{x^2 - a^2}$</td><td>$x = a\sec\theta$,&nbsp; $dx = a\sec\theta\tan\theta\,d\theta$</td><td>$a\tan\theta$</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Salen de $1 - \sin^2\theta = \cos^2\theta$, $1 + \tan^2\theta = \sec^2\theta$ y $\sec^2\theta - 1 = \tan^2\theta$.</p>
+      <h3>Pasos</h3>
+      <ol>
+        <li>Identifica la forma y el valor de $a$.</li>
+        <li>Sustituye $x$ y $dx$; la raíz se convierte en una expresión trigonométrica.</li>
+        <li>Integra respecto a $\theta$ (módulo 10: potencias de seno y coseno).</li>
+        <li><strong>Regresa a $x$ con un triángulo rectángulo</strong>: dibuja el ángulo $\theta$ con los lados que da la sustitución y lee de ahí el seno, el coseno o la tangente.</li>
+      </ol>
+      <div class="nota"><strong>Tip:</strong> si la integral tiene un trinomio $ax^2 + bx + c$ bajo la raíz, primero completa el cuadrado (módulo 13) y luego aplica la sustitución.</div>
+    </section>
+
+    <!-- ===================== 2. VISUALIZADOR ===================== -->
+    <section id="visualizador" class="seccion">
+      <h2><span class="paso">2</span> <span>Visualizador interactivo: $f(x)$ y su antiderivada $F(x) + C$</span></h2>
+      <p>Las tres antiderivadas mezclan funciones algebraicas con arcoseno o arcosecante. Comprueba con la tangente que $F'$ coincide con $f$ en cada punto.</p>
+      <div class="visualizador">
+        <div id="controles" class="controles">
+          <div class="control">
+            <label for="control-ejemplo">Ejemplo a graficar</label>
+            <select id="control-ejemplo"></select>
+          </div>
+          <div class="control">
+            <label for="control-c">Constante C = <span id="valor-c" class="valor-deslizador"></span></label>
+            <input id="control-c" type="range" min="-10" max="10" step="0.5" value="0">
+          </div>
+          <div class="control">
+            <label><input id="control-familia" type="checkbox" checked> Mostrar la familia F(x) + C</label>
+          </div>
+          <div class="control">
+            <label for="control-x">Punto para comparar pendientes: x = <span id="valor-x" class="valor-deslizador"></span></label>
+            <input id="control-x" type="range" min="0" max="100" step="1" value="50">
+            <span class="ayuda">La recta tangente a F en ese punto tiene pendiente f(x).</span>
+          </div>
+        </div>
+        <div>
+          <div id="grafica" class="grafica" role="img" aria-label="Gráfica de f(x) y de su antiderivada F(x) + C"></div>
+          <div id="resultados" class="resultados"></div>
+          <p id="formula-exacta"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 3. EJEMPLOS ===================== -->
+    <section id="ejemplos" class="seccion">
+      <h2><span class="paso">3</span> Ejemplos resueltos paso a paso</h2>
+
+      <article class="ejemplo">
+        <h3>Ejemplo XVII.1 — $\displaystyle\int \sqrt{4 - x^2}\,dx$</h3>
+        <ol>
+          <li>Forma $\sqrt{a^2 - x^2}$ con $a = 2$: $x = 2\sin\theta$, $dx = 2\cos\theta\,d\theta$ y $\sqrt{4 - x^2} = 2\cos\theta$.</li>
+          <li>Sustituimos: $$\int 2\cos\theta\cdot 2\cos\theta\,d\theta = 4\int \cos^2\theta\,d\theta = 2\int (1 + \cos 2\theta)\,d\theta$$</li>
+          <li>Integramos: $2\theta + \sin 2\theta = 2\theta + 2\sin\theta\cos\theta$.</li>
+          <li>Triángulo: $\sin\theta = \dfrac{x}{2}$, $\cos\theta = \dfrac{\sqrt{4-x^2}}{2}$ y $\theta = \arcsin\dfrac{x}{2}$.</li>
+          <li>Resultado: $$\int \sqrt{4 - x^2}\,dx = 2\arcsin\frac{x}{2} + \frac{x\sqrt{4 - x^2}}{2} + C$$ (es el área de un semicírculo: por eso $\int_{-2}^{2} = 2\pi$).</li>
+        </ol>
+        <p class="resultado-final">$\displaystyle \frac{x\sqrt{4 - x^2}}{2} + 2\arcsin\frac{x}{2} + C$</p>
+      </article>
+      <article class="ejemplo">
+        <h3>Ejemplo XVII.2 — $\displaystyle\int \frac{dx}{x^2\sqrt{x^2 + 4}}$</h3>
+        <ol>
+          <li>Forma $\sqrt{x^2 + a^2}$ con $a = 2$: $x = 2\tan\theta$, $dx = 2\sec^2\theta\,d\theta$ y $\sqrt{x^2+4} = 2\sec\theta$.</li>
+          <li>Sustituimos: $$\int \frac{2\sec^2\theta}{4\tan^2\theta\cdot 2\sec\theta}\,d\theta = \frac14\int \frac{\sec\theta}{\tan^2\theta}\,d\theta = \frac14\int \frac{\cos\theta}{\sin^2\theta}\,d\theta$$</li>
+          <li>Con $u = \sin\theta$: $\displaystyle\frac14\int u^{-2}\,du = -\frac{1}{4\sin\theta}$.</li>
+          <li>Triángulo: $\tan\theta = \dfrac{x}{2}$, así que $\sin\theta = \dfrac{x}{\sqrt{x^2+4}}$.</li>
+          <li>Resultado: $$\int \frac{dx}{x^2\sqrt{x^2+4}} = -\frac{\sqrt{x^2+4}}{4x} + C$$</li>
+        </ol>
+        <p class="resultado-final">$\displaystyle -\frac{\sqrt{x^2+4}}{4x} + C$</p>
+      </article>
+      <article class="ejemplo">
+        <h3>Ejemplo XVII.3 — $\displaystyle\int \frac{\sqrt{x^2 - 4}}{x}\,dx$ (para $x > 2$)</h3>
+        <ol>
+          <li>Forma $\sqrt{x^2 - a^2}$ con $a = 2$: $x = 2\sec\theta$, $dx = 2\sec\theta\tan\theta\,d\theta$ y $\sqrt{x^2-4} = 2\tan\theta$.</li>
+          <li>Sustituimos: $$\int \frac{2\tan\theta}{2\sec\theta}\cdot 2\sec\theta\tan\theta\,d\theta = 2\int \tan^2\theta\,d\theta = 2\int (\sec^2\theta - 1)\,d\theta$$</li>
+          <li>Integramos: $2\tan\theta - 2\theta$.</li>
+          <li>Triángulo: $\tan\theta = \dfrac{\sqrt{x^2-4}}{2}$ y $\theta = \operatorname{arcsec}\dfrac{x}{2}$.</li>
+          <li>Resultado: $$\int \frac{\sqrt{x^2-4}}{x}\,dx = \sqrt{x^2 - 4} - 2\operatorname{arcsec}\frac{x}{2} + C$$</li>
+        </ol>
+        <p class="resultado-final">$\displaystyle \sqrt{x^2 - 4} - 2\operatorname{arcsec}\frac{x}{2} + C$</p>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,5 +1,5 @@
 /**
- * modulos.js — Lista única de los 16 módulos de la plataforma.
+ * modulos.js — Lista única de los 20 módulos de la plataforma.
  *
  * Es la "fuente de verdad" del sitio: el menú de navegación, las tarjetas
  * de la página de inicio y los botones "Anterior / Siguiente" se generan
@@ -7,7 +7,7 @@
  * Fase 2 o 3 solo hay que editar este archivo (y crear su carpeta).
  *
  * Campos de cada módulo:
- *  - numero:      número del módulo (1 a 16)
+ *  - numero:      número del módulo (1 a 20)
  *  - carpeta:     nombre de la carpeta dentro de /modulos
  *  - nombre:      título que se muestra en el menú y en las tarjetas
  *  - fase:        fase del proyecto en la que se desarrolla (1, 2 o 3)
@@ -43,8 +43,16 @@ const MODULOS = [
     descripcion: 'Completar el cuadrado para integrar expresiones ax² + bx + c.' },
   { numero: 14, carpeta: '14-integracion-por-partes', nombre: 'Integración por Partes', fase: 3, disponible: true,
     descripcion: 'La fórmula ∫u dv = uv − ∫v du y sus aplicaciones.' },
-  { numero: 15, carpeta: '15-volumenes-secciones', nombre: 'Volúmenes por Secciones', fase: 3, disponible: true,
+  { numero: 15, carpeta: '15-integrales-racionales', nombre: 'Integrales Racionales', fase: 3, disponible: true,
+    descripcion: 'Fracciones parciales: raíces reales simples, múltiples y complejas.' },
+  { numero: 16, carpeta: '16-integrales-irracionales', nombre: 'Integrales Irracionales', fase: 3, disponible: true,
+    descripcion: 'Cambios de variable x = tⁿ que convierten raíces en una integral racional.' },
+  { numero: 17, carpeta: '17-sustitucion-trigonometrica', nombre: 'Sustitución Trigonométrica', fase: 3, disponible: true,
+    descripcion: 'Integrales con √(a²−x²), √(a²+x²) y √(x²−a²) mediante x = a·sen θ, a·tan θ, a·sec θ.' },
+  { numero: 18, carpeta: '18-sustitucion-universal', nombre: 'Sustitución Universal', fase: 3, disponible: true,
+    descripcion: 'Con z = tan(x/2) cualquier expresión racional de sen x y cos x se vuelve racional en z.' },
+  { numero: 19, carpeta: '19-volumenes-secciones', nombre: 'Volúmenes por Secciones', fase: 3, disponible: true,
     descripcion: 'Apila secciones transversales conocidas (cuadrados, semicírculos, triángulos) para hallar el volumen.' },
-  { numero: 16, carpeta: '16-solidos-revolucion', nombre: 'Sólidos de Revolución', fase: 3, disponible: true,
+  { numero: 20, carpeta: '20-solidos-revolucion', nombre: 'Sólidos de Revolución', fase: 3, disponible: true,
     descripcion: 'Discos, arandelas y cascarones cilíndricos: el volumen de una región al girar sobre un eje.' }
 ];

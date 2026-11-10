@@ -235,5 +235,116 @@ const EJEMPLOS_INTEGRALES = {
       latexF: '\\frac{x^2}{2}\\ln x-\\frac{x^2}{4}',
       xMin: 0.2, xMax: 5
     }
+  },
+  // Módulo 15 — Integrales racionales (fracciones parciales)
+  15: {
+    'XV.1': {
+      nombre: 'XV.1:  (5x + 1) / ((x − 1)(x + 2))',
+      latex: '\\frac{5x+1}{(x-1)(x+2)}',
+      f: function (x) { return (5 * x + 1) / ((x - 1) * (x + 2)); },
+      F: function (x) { return 2 * Math.log(Math.abs(x - 1)) + 3 * Math.log(Math.abs(x + 2)); },
+      latexF: '2\\ln|x-1|+3\\ln|x+2|',
+      xMin: 1.1, xMax: 6
+    },
+    'XV.2': {
+      nombre: 'XV.2:  (3x + 5) / (x³ − x² − x + 1)',
+      latex: '\\frac{3x+5}{x^3-x^2-x+1}',
+      f: function (x) { return (3 * x + 5) / ((x + 1) * (x - 1) * (x - 1)); },
+      F: function (x) { return Math.log(Math.abs(x + 1)) / 2 - Math.log(Math.abs(x - 1)) / 2 - 4 / (x - 1); },
+      latexF: '\\frac12\\ln|x+1|-\\frac12\\ln|x-1|-\\frac{4}{x-1}',
+      xMin: 1.1, xMax: 6
+    },
+    'XV.3': {
+      nombre: 'XV.3:  1 / ((x − 1)(x² + 1))',
+      latex: '\\frac{1}{(x-1)(x^2+1)}',
+      f: function (x) { return 1 / ((x - 1) * (x * x + 1)); },
+      F: function (x) { return Math.log(Math.abs(x - 1)) / 2 - Math.log(x * x + 1) / 4 - Math.atan(x) / 2; },
+      latexF: '\\frac12\\ln|x-1|-\\frac14\\ln(x^2+1)-\\frac12\\arctan x',
+      xMin: 1.1, xMax: 6
+    }
+  },
+
+  // Módulo 16 — Integrales irracionales
+  16: {
+    'XVI.1': {
+      nombre: 'XVI.1:  1 / (√x + ∛x)',
+      latex: '\\frac{1}{\\sqrt{x}+\\sqrt[3]{x}}',
+      f: function (x) { return 1 / (Math.sqrt(x) + Math.cbrt(x)); },
+      F: function (x) { return 2 * Math.sqrt(x) - 3 * Math.cbrt(x) + 6 * Math.pow(x, 1 / 6) - 6 * Math.log(Math.pow(x, 1 / 6) + 1); },
+      latexF: '2\\sqrt{x}-3\\sqrt[3]{x}+6\\sqrt[6]{x}-6\\ln\\left(\\sqrt[6]{x}+1\\right)',
+      xMin: 0.05, xMax: 6
+    },
+    'XVI.2': {
+      nombre: 'XVI.2:  x / √(x + 1)',
+      latex: '\\frac{x}{\\sqrt{x+1}}',
+      f: function (x) { return x / Math.sqrt(x + 1); },
+      F: function (x) { return (2 / 3) * Math.pow(x + 1, 1.5) - 2 * Math.sqrt(x + 1); },
+      latexF: '\\frac23(x+1)^{3/2}-2\\sqrt{x+1}',
+      xMin: -0.9, xMax: 8
+    },
+    'XVI.3': {
+      nombre: 'XVI.3:  1 / (1 + √x)',
+      latex: '\\frac{1}{1+\\sqrt{x}}',
+      f: function (x) { return 1 / (1 + Math.sqrt(x)); },
+      F: function (x) { return 2 * Math.sqrt(x) - 2 * Math.log(1 + Math.sqrt(x)); },
+      latexF: '2\\sqrt{x}-2\\ln\\left(1+\\sqrt{x}\\right)',
+      xMin: 0.02, xMax: 9
+    }
+  },
+
+  // Módulo 17 — Sustituciones trigonométricas
+  17: {
+    'XVII.1': {
+      nombre: 'XVII.1:  √(4 − x²)',
+      latex: '\\sqrt{4-x^2}',
+      f: function (x) { return Math.sqrt(4 - x * x); },
+      F: function (x) { return (x * Math.sqrt(4 - x * x)) / 2 + 2 * Math.asin(x / 2); },
+      latexF: '\\frac{x\\sqrt{4-x^2}}{2}+2\\arcsin\\frac{x}{2}',
+      xMin: -1.95, xMax: 1.95
+    },
+    'XVII.2': {
+      nombre: 'XVII.2:  1 / (x²·√(x² + 4))',
+      latex: '\\frac{1}{x^2\\sqrt{x^2+4}}',
+      f: function (x) { return 1 / (x * x * Math.sqrt(x * x + 4)); },
+      F: function (x) { return -Math.sqrt(x * x + 4) / (4 * x); },
+      latexF: '-\\frac{\\sqrt{x^2+4}}{4x}',
+      xMin: 0.3, xMax: 6
+    },
+    'XVII.3': {
+      nombre: 'XVII.3:  √(x² − 4) / x',
+      latex: '\\frac{\\sqrt{x^2-4}}{x}',
+      f: function (x) { return Math.sqrt(x * x - 4) / x; },
+      F: function (x) { return Math.sqrt(x * x - 4) - 2 * Math.acos(2 / x); },
+      latexF: '\\sqrt{x^2-4}-2\\operatorname{arcsec}\\frac{x}{2}',
+      xMin: 2.05, xMax: 8
+    }
+  },
+
+  // Módulo 18 — Sustitución universal
+  18: {
+    'XVIII.1': {
+      nombre: 'XVIII.1:  1 / (1 + cos x)',
+      latex: '\\frac{1}{1+\\cos x}',
+      f: function (x) { return 1 / (1 + Math.cos(x)); },
+      F: function (x) { return Math.tan(x / 2); },
+      latexF: '\\tan\\frac{x}{2}',
+      xMin: -2.8, xMax: 2.8
+    },
+    'XVIII.2': {
+      nombre: 'XVIII.2:  1 / sen x',
+      latex: '\\frac{1}{\\sin x}',
+      f: function (x) { return 1 / Math.sin(x); },
+      F: function (x) { return Math.log(Math.abs(Math.tan(x / 2))); },
+      latexF: '\\ln\\left|\\tan\\frac{x}{2}\\right|',
+      xMin: 0.2, xMax: 2.9
+    },
+    'XVIII.3': {
+      nombre: 'XVIII.3:  1 / (3 + 5·sen x)',
+      latex: '\\frac{1}{3+5\\sin x}',
+      f: function (x) { return 1 / (3 + 5 * Math.sin(x)); },
+      F: function (x) { var z = Math.tan(x / 2); return Math.log(Math.abs((3 * z + 1) / (z + 3))) / 4; },
+      latexF: '\\frac14\\ln\\left|\\frac{3\\tan\\frac{x}{2}+1}{\\tan\\frac{x}{2}+3}\\right|',
+      xMin: -0.5, xMax: 0.55
+    }
   }
 };

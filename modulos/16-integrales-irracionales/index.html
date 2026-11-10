@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>16. Integrales Irracionales · Cálculo Integral</title>
+
+  <!-- Librerías externas (CDN): KaTeX para fórmulas y Plotly para gráficas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
+
+  <!-- Código propio -->
+  <link rel="stylesheet" href="../../assets/css/styles.css">
+  <script defer src="../../assets/js/modulos.js"></script>
+  <script defer src="../../assets/js/layout.js"></script>
+  <script defer src="../../assets/js/visualizador.js"></script>
+  <script defer src="../../assets/js/ejemplos-integrales.js"></script>
+  <script defer src="../../assets/js/antiderivadas.js"></script>
+</head>
+<body data-raiz="../../" data-modulo="16">
+  <main>
+    <header class="cabecera-modulo">
+      <p class="migas">Módulo 16 · Fase 3 · Integral indefinida</p>
+      <h1>Integrales Irracionales</h1>
+      <p>Cuando el integrando tiene raíces de $x$ (o de una expresión lineal), un cambio de variable bien elegido las elimina y deja una integral racional.</p>
+      <nav class="indice-secciones" aria-label="Secciones del módulo">
+        <a href="#teoria">1. Teoría</a>
+        <a href="#visualizador">2. Visualizador</a>
+        <a href="#ejemplos">3. Ejemplos resueltos</a>
+      </nav>
+    </header>
+
+    <!-- ===================== 1. TEORÍA ===================== -->
+    <section id="teoria" class="seccion">
+      <h2><span class="paso">1</span> Teoría</h2>
+      <h3>Caso 1 · potencias de $x$ dentro de radicales</h3>
+      <p>Si aparecen $\sqrt[m_1]{x}, \sqrt[m_2]{x}, \dots$, se hace el cambio</p>
+      <div class="caja-formula">$$x = t^{m}, \qquad dx = m\,t^{m-1}\,dt, \qquad m = \operatorname{mcm}(m_1, m_2, \dots)$$</div>
+      <p>Así cada raíz se convierte en una potencia entera de $t$. Por ejemplo, con $\sqrt{x}$ y $\sqrt[3]{x}$ se usa $m = 6$ y $x = t^6$.</p>
+      <h3>Caso 2 · radical de una expresión lineal</h3>
+      <p>Si aparece $\sqrt[n]{ax + b}$, se toma $t = \sqrt[n]{ax + b}$; se despeja $x = \dfrac{t^n - b}{a}$ y $dx = \dfrac{n\,t^{n-1}}{a}\,dt$.</p>
+      <h3>Pasos</h3>
+      <ol>
+        <li>Elige la sustitución y calcula $dx$.</li>
+        <li>Reescribe toda la integral en $t$: queda una función racional.</li>
+        <li>Si el grado del numerador es mayor o igual que el del denominador, divide; si no, fracciones parciales (módulo 15).</li>
+        <li>Integra y regresa a $x$ con $t = x^{1/m}$ (o con $t = \sqrt[n]{ax+b}$).</li>
+      </ol>
+      <div class="nota"><strong>No olvides el $dx$:</strong> es el paso donde más se falla. Si $x = t^6$, entonces $dx = 6t^5\,dt$ y debe aparecer en la integral.</div>
+    </section>
+
+    <!-- ===================== 2. VISUALIZADOR ===================== -->
+    <section id="visualizador" class="seccion">
+      <h2><span class="paso">2</span> <span>Visualizador interactivo: $f(x)$ y su antiderivada $F(x) + C$</span></h2>
+      <p>Las integrales irracionales se vuelven racionales con una sustitución, pero la antiderivada final vuelve a tener raíces. Comprueba con la tangente que $F'$ sigue siendo $f$.</p>
+      <div class="visualizador">
+        <div id="controles" class="controles">
+          <div class="control">
+            <label for="control-ejemplo">Ejemplo a graficar</label>
+            <select id="control-ejemplo"></select>
+          </div>
+          <div class="control">
+            <label for="control-c">Constante C = <span id="valor-c" class="valor-deslizador"></span></label>
+            <input id="control-c" type="range" min="-10" max="10" step="0.5" value="0">
+          </div>
+          <div class="control">
+            <label><input id="control-familia" type="checkbox" checked> Mostrar la familia F(x) + C</label>
+          </div>
+          <div class="control">
+            <label for="control-x">Punto para comparar pendientes: x = <span id="valor-x" class="valor-deslizador"></span></label>
+            <input id="control-x" type="range" min="0" max="100" step="1" value="50">
+            <span class="ayuda">La recta tangente a F en ese punto tiene pendiente f(x).</span>
+          </div>
+        </div>
+        <div>
+          <div id="grafica" class="grafica" role="img" aria-label="Gráfica de f(x) y de su antiderivada F(x) + C"></div>
+          <div id="resultados" class="resultados"></div>
+          <p id="formula-exacta"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 3. EJEMPLOS ===================== -->
+    <section id="ejemplos" class="seccion">
+      <h2><span class="paso">3</span> Ejemplos resueltos paso a paso</h2>
+
+      <article class="ejemplo">
+        <h3>Ejemplo XVI.1 — $\displaystyle\int \frac{dx}{\sqrt{x} + \sqrt[3]{x}}$</h3>
+        <ol>
+          <li>Los índices son 2 y 3, y $\operatorname{mcm}(2,3) = 6$. Hacemos $x = t^6$, $dx = 6t^5\,dt$; entonces $\sqrt{x} = t^3$ y $\sqrt[3]{x} = t^2$.</li>
+          <li>Sustituimos: $$\int \frac{6t^5}{t^3 + t^2}\,dt = 6\int \frac{t^3}{t+1}\,dt$$</li>
+          <li>El grado del numerador es mayor: dividimos, $\dfrac{t^3}{t+1} = t^2 - t + 1 - \dfrac{1}{t+1}$.</li>
+          <li>Integramos: $$6\left[\frac{t^3}{3} - \frac{t^2}{2} + t - \ln|t+1|\right] = 2t^3 - 3t^2 + 6t - 6\ln|t+1|$$</li>
+          <li>Volvemos a $x$ con $t = \sqrt[6]{x}$: $$2\sqrt{x} - 3\sqrt[3]{x} + 6\sqrt[6]{x} - 6\ln\left(\sqrt[6]{x} + 1\right) + C$$</li>
+        </ol>
+        <p class="resultado-final">$\displaystyle 2\sqrt{x} - 3\sqrt[3]{x} + 6\sqrt[6]{x} - 6\ln\left(\sqrt[6]{x} + 1\right) + C$</p>
+      </article>
+      <article class="ejemplo">
+        <h3>Ejemplo XVI.2 — $\displaystyle\int \frac{x}{\sqrt{x+1}}\,dx$</h3>
+        <ol>
+          <li>Elegimos $t = \sqrt{x+1}$. Entonces $x = t^2 - 1$ y $dx = 2t\,dt$.</li>
+          <li>Sustituimos: $$\int \frac{t^2 - 1}{t}\cdot 2t\,dt = 2\int (t^2 - 1)\,dt$$</li>
+          <li>Integramos: $2\left(\dfrac{t^3}{3} - t\right) = \dfrac{2t^3}{3} - 2t$.</li>
+          <li>Volvemos a $x$: $$\int \frac{x}{\sqrt{x+1}}\,dx = \frac23(x+1)^{3/2} - 2\sqrt{x+1} + C$$</li>
+        </ol>
+        <p class="resultado-final">$\displaystyle \frac23(x+1)^{3/2} - 2\sqrt{x+1} + C$</p>
+      </article>
+      <article class="ejemplo">
+        <h3>Ejemplo XVI.3 — $\displaystyle\int \frac{dx}{1 + \sqrt{x}}$</h3>
+        <ol>
+          <li>Elegimos $t = \sqrt{x}$, entonces $x = t^2$ y $dx = 2t\,dt$.</li>
+          <li>Sustituimos: $$\int \frac{2t}{1+t}\,dt = 2\int\left(1 - \frac{1}{1+t}\right)dt$$ (porque $\dfrac{t}{1+t} = 1 - \dfrac{1}{1+t}$).</li>
+          <li>Integramos: $2t - 2\ln(1+t)$.</li>
+          <li>Volvemos a $x$: $$\int \frac{dx}{1+\sqrt{x}} = 2\sqrt{x} - 2\ln\left(1 + \sqrt{x}\right) + C$$</li>
+        </ol>
+        <p class="resultado-final">$\displaystyle 2\sqrt{x} - 2\ln\left(1 + \sqrt{x}\right) + C$</p>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>15. Integrales Racionales · Cálculo Integral</title>
+
+  <!-- Librerías externas (CDN): KaTeX para fórmulas y Plotly para gráficas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
+
+  <!-- Código propio -->
+  <link rel="stylesheet" href="../../assets/css/styles.css">
+  <script defer src="../../assets/js/modulos.js"></script>
+  <script defer src="../../assets/js/layout.js"></script>
+  <script defer src="../../assets/js/visualizador.js"></script>
+  <script defer src="../../assets/js/ejemplos-integrales.js"></script>
+  <script defer src="../../assets/js/antiderivadas.js"></script>
+</head>
+<body data-raiz="../../" data-modulo="15">
+  <main>
+    <header class="cabecera-modulo">
+      <p class="migas">Módulo 15 · Fase 3 · Integral indefinida</p>
+      <h1>Integrales Racionales</h1>
+      <p>Una función racional es un cociente de polinomios $\frac{p(x)}{q(x)}$. Se integra descomponiéndola en <strong>fracciones parciales</strong>, cada una de las cuales ya es una integral conocida.</p>
+      <nav class="indice-secciones" aria-label="Secciones del módulo">
+        <a href="#teoria">1. Teoría</a>
+        <a href="#visualizador">2. Visualizador</a>
+        <a href="#ejemplos">3. Ejemplos resueltos</a>
+      </nav>
+    </header>
+
+    <!-- ===================== 1. TEORÍA ===================== -->
+    <section id="teoria" class="seccion">
+      <h2><span class="paso">1</span> Teoría</h2>
+      <h3>Antes de descomponer</h3>
+      <ol>
+        <li>Compara los grados. Si el grado de $p$ es <strong>mayor o igual</strong> que el de $q$, primero se divide: $\dfrac{p}{q} = c(x) + \dfrac{r(x)}{q(x)}$ con el resto de menor grado.</li>
+        <li>Si el grado de $p$ es menor que el de $q$, factoriza $q(x)$ (con división sintética si hace falta) y descompón.</li>
+      </ol>
+      <h3>Los tres casos</h3>
+      <ul>
+        <li><strong>Caso 1 · raíces reales simples:</strong> $\dfrac{p}{(x-a)(x-b)} = \dfrac{A}{x-a} + \dfrac{B}{x-b}$.</li>
+        <li><strong>Caso 2 · raíces reales múltiples:</strong> un factor $(x-a)^n$ aporta $\dfrac{A_1}{x-a} + \dfrac{A_2}{(x-a)^2} + \cdots + \dfrac{A_n}{(x-a)^n}$.</li>
+        <li><strong>Caso 3 · raíces complejas simples:</strong> un factor cuadrático irreducible $x^2 + bx + c$ aporta $\dfrac{Bx + C}{x^2 + bx + c}$.</li>
+      </ul>
+      <p>Para hallar las constantes: multiplica por el denominador y <strong>sustituye las raíces</strong> (caso 1), o <strong>iguala coeficientes</strong> y resuelve el sistema.</p>
+      <div class="caja-formula">$$\int \frac{dx}{x-a} = \ln|x-a| \qquad \int \frac{dx}{(x-a)^2} = -\frac{1}{x-a} \qquad \int \frac{dx}{x^2+a^2} = \frac1a\arctan\frac{x}{a}$$</div>
+      <div class="nota"><strong>Cuidado:</strong> para $\dfrac{Bx+C}{x^2+1}$ separa en $\dfrac{Bx}{x^2+1} + \dfrac{C}{x^2+1}$; la primera da un logaritmo ($u = x^2+1$) y la segunda un arcotangente.</div>
+    </section>
+
+    <!-- ===================== 2. VISUALIZADOR ===================== -->
+    <section id="visualizador" class="seccion">
+      <h2><span class="paso">2</span> <span>Visualizador interactivo: $f(x)$ y su antiderivada $F(x) + C$</span></h2>
+      <p>Cada ejemplo es un caso distinto de fracciones parciales. Mira las asíntotas verticales de $f$: aparecen justo en las raíces del denominador, y $F$ tiene un logaritmo ahí.</p>
+      <div class="visualizador">
+        <div id="controles" class="controles">
+          <div class="control">
+            <label for="control-ejemplo">Ejemplo a graficar</label>
+            <select id="control-ejemplo"></select>
+          </div>
+          <div class="control">
+            <label for="control-c">Constante C = <span id="valor-c" class="valor-deslizador"></span></label>
+            <input id="control-c" type="range" min="-10" max="10" step="0.5" value="0">
+          </div>
+          <div class="control">
+            <label><input id="control-familia" type="checkbox" checked> Mostrar la familia F(x) + C</label>
+          </div>
+          <div class="control">
+            <label for="control-x">Punto para comparar pendientes: x = <span id="valor-x" class="valor-deslizador"></span></label>
+            <input id="control-x" type="range" min="0" max="100" step="1" value="50">
+            <span class="ayuda">La recta tangente a F en ese punto tiene pendiente f(x).</span>
+          </div>
+        </div>
+        <div>
+          <div id="grafica" class="grafica" role="img" aria-label="Gráfica de f(x) y de su antiderivada F(x) + C"></div>
+          <div id="resultados" class="resultados"></div>
+          <p id="formula-exacta"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 3. EJEMPLOS ===================== -->
+    <section id="ejemplos" class="seccion">
+      <h2><span class="paso">3</span> Ejemplos resueltos paso a paso</h2>
+
+      <article class="ejemplo">
+        <h3>Ejemplo XV.1 (caso 1) — $\displaystyle\int \frac{5x+1}{(x-1)(x+2)}\,dx$</h3>
+        <ol>
+          <li>El denominador ya está factorizado con raíces reales distintas: $$\frac{5x+1}{(x-1)(x+2)} = \frac{A}{x-1} + \frac{B}{x+2}$$</li>
+          <li>Multiplicamos por el denominador: $5x + 1 = A(x+2) + B(x-1)$.</li>
+          <li>Sustituimos las raíces: con $x = 1$: $6 = 3A \Rightarrow A = 2$. Con $x = -2$: $-9 = -3B \Rightarrow B = 3$.</li>
+          <li>Integramos cada fracción: $$\int \left(\frac{2}{x-1} + \frac{3}{x+2}\right)dx = 2\ln|x-1| + 3\ln|x+2|$$</li>
+          <li>Comprobación: $\dfrac{2}{x-1} + \dfrac{3}{x+2} = \dfrac{2(x+2) + 3(x-1)}{(x-1)(x+2)} = \dfrac{5x+1}{(x-1)(x+2)}$ ✔</li>
+        </ol>
+        <p class="resultado-final">$\displaystyle 2\ln|x-1| + 3\ln|x+2| + C$</p>
+      </article>
+      <article class="ejemplo">
+        <h3>Ejemplo XV.2 (caso 2, ejemplo de clase) — $\displaystyle\int \frac{3x+5}{x^3-x^2-x+1}\,dx$</h3>
+        <ol>
+          <li>Factorizamos: $x = 1$ es raíz ($1 - 1 - 1 + 1 = 0$). Al dividir queda $x^3 - x^2 - x + 1 = (x-1)(x^2-1) = (x-1)^2(x+1)$.</li>
+          <li>Hay una raíz doble en $x = 1$: $$\frac{3x+5}{(x+1)(x-1)^2} = \frac{A}{x+1} + \frac{B}{x-1} + \frac{C}{(x-1)^2}$$</li>
+          <li>Multiplicamos: $3x + 5 = A(x-1)^2 + B(x+1)(x-1) + C(x+1)$.</li>
+          <li>Con $x = -1$: $2 = 4A \Rightarrow A = \tfrac12$. Con $x = 1$: $8 = 2C \Rightarrow C = 4$. Con $x = 0$: $5 = A - B + C \Rightarrow B = -\tfrac12$.</li>
+          <li>Integramos: $$\tfrac12\int\frac{dx}{x+1} - \tfrac12\int\frac{dx}{x-1} + 4\int\frac{dx}{(x-1)^2} = \tfrac12\ln|x+1| - \tfrac12\ln|x-1| - \frac{4}{x-1}$$</li>
+        </ol>
+        <p class="resultado-final">$\displaystyle \frac12\ln|x+1| - \frac12\ln|x-1| - \frac{4}{x-1} + C$</p>
+      </article>
+      <article class="ejemplo">
+        <h3>Ejemplo XV.3 (caso 3) — $\displaystyle\int \frac{dx}{(x-1)(x^2+1)}$</h3>
+        <ol>
+          <li>$x^2 + 1$ no tiene raíces reales (es irreducible), así que su fracción lleva numerador lineal: $$\frac{1}{(x-1)(x^2+1)} = \frac{A}{x-1} + \frac{Bx + C}{x^2+1}$$</li>
+          <li>Multiplicamos: $1 = A(x^2+1) + (Bx + C)(x-1)$.</li>
+          <li>Con $x = 1$: $1 = 2A \Rightarrow A = \tfrac12$. Coeficiente de $x^2$: $0 = A + B \Rightarrow B = -\tfrac12$. Término constante: $1 = A - C \Rightarrow C = -\tfrac12$.</li>
+          <li>Integramos: $$\tfrac12\ln|x-1| - \tfrac12\int\frac{x}{x^2+1}\,dx - \tfrac12\int\frac{dx}{x^2+1} = \tfrac12\ln|x-1| - \tfrac14\ln(x^2+1) - \tfrac12\arctan x$$</li>
+        </ol>
+        <p class="resultado-final">$\displaystyle \frac12\ln|x-1| - \frac14\ln(x^2+1) - \frac12\arctan x + C$</p>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

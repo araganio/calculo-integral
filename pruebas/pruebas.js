@@ -60,23 +60,27 @@ const PRUEBAS = [
   ['XII', "Hiperbólicas inversas: F' = f en los 3 ejemplos", 0, peorErrorDerivada(12)],
   ['XIII', "Trinomio cuadrático: F' = f en los 3 ejemplos", 0, peorErrorDerivada(13)],
   ['XIV', "Por partes: F' = f en los 3 ejemplos", 0, peorErrorDerivada(14)],
+  ['XV', "Racionales: F' = f en los 3 ejemplos", 0, peorErrorDerivada(15)],
+  ['XVI', "Irracionales: F' = f en los 3 ejemplos", 0, peorErrorDerivada(16)],
+  ['XVII', "Sustitución trigonométrica: F' = f en los 3 ejemplos", 0, peorErrorDerivada(17)],
+  ['XVIII', "Sustitución universal: F' = f en los 3 ejemplos", 0, peorErrorDerivada(18)],
 
-  // Módulo 15: volúmenes por secciones (Simpson n = 1000 sobre A(x))
-  ['XV.1', 'Círculo, triángulos equiláteros: 4√3/3', 2.3094,
+  // Módulo 19: volúmenes por secciones (Simpson n = 1000 sobre A(x))
+  ['XIX.1', 'Círculo, triángulos equiláteros: 4√3/3', 2.3094,
     simpson(function (x) { return Math.sqrt(3) * (1 - x * x); }, -1, 1, 1000)],
-  ['XV.2', 'Bajo y = 1 − x²/4, cuadrados: 16/15', 1.0667,
+  ['XIX.2', 'Bajo y = 1 − x²/4, cuadrados: 16/15', 1.0667,
     simpson(function (x) { return Math.pow(1 - x * x / 4, 2); }, 0, 2, 1000)],
-  ['XV.3', 'Círculo, semicírculos: 2π/3', 2.0944,
+  ['XIX.3', 'Círculo, semicírculos: 2π/3', 2.0944,
     simpson(function (x) { return (PI / 2) * (1 - x * x); }, -1, 1, 1000)],
 
-  // Módulo 16: sólidos de revolución
-  ['XVI.1', 'Discos: y = √x, [0, 4], eje x → 8π', 25.1327,
+  // Módulo 20: sólidos de revolución
+  ['XX.1', 'Discos: y = √x, [0, 4], eje x → 8π', 25.1327,
     simpson(function (x) { return PI * x; }, 0, 4, 1000)],
-  ['XVI.2', 'Arandelas: √x y x², eje x → 3π/10', 0.9425,
+  ['XX.2', 'Arandelas: √x y x², eje x → 3π/10', 0.9425,
     simpson(function (x) { return PI * (x - Math.pow(x, 4)); }, 0, 1, 1000)],
-  ['XVI.3', 'Cascarones: y = x², [0, 2], eje y → 8π', 25.1327,
+  ['XX.3', 'Cascarones: y = x², [0, 2], eje y → 8π', 25.1327,
     simpson(function (x) { return 2 * PI * x * x * x; }, 0, 2, 1000)],
-  ['XVI.3', 'Mismo sólido por arandelas en y (comprobación)', 25.1327,
+  ['XX.3', 'Mismo sólido por arandelas en y (comprobación)', 25.1327,
     simpson(function (y) { return PI * (4 - y); }, 0, 4, 1000)]
 ];
 

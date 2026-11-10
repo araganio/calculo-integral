@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>18. Sustitución Universal · Cálculo Integral</title>
+
+  <!-- Librerías externas (CDN): KaTeX para fórmulas y Plotly para gráficas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
+
+  <!-- Código propio -->
+  <link rel="stylesheet" href="../../assets/css/styles.css">
+  <script defer src="../../assets/js/modulos.js"></script>
+  <script defer src="../../assets/js/layout.js"></script>
+  <script defer src="../../assets/js/visualizador.js"></script>
+  <script defer src="../../assets/js/ejemplos-integrales.js"></script>
+  <script defer src="../../assets/js/antiderivadas.js"></script>
+</head>
+<body data-raiz="../../" data-modulo="18">
+  <main>
+    <header class="cabecera-modulo">
+      <p class="migas">Módulo 18 · Fase 3 · Integral indefinida</p>
+      <h1>Sustitución Universal</h1>
+      <p>Si el integrando es una expresión racional de $\sin x$ y $\cos x$, el cambio $z = \tan\frac{x}{2}$ lo convierte en una función racional de $z$. Se llama "universal" porque funciona siempre.</p>
+      <nav class="indice-secciones" aria-label="Secciones del módulo">
+        <a href="#teoria">1. Teoría</a>
+        <a href="#visualizador">2. Visualizador</a>
+        <a href="#ejemplos">3. Ejemplos resueltos</a>
+      </nav>
+    </header>
+
+    <!-- ===================== 1. TEORÍA ===================== -->
+    <section id="teoria" class="seccion">
+      <h2><span class="paso">1</span> Teoría</h2>
+      <p>Con $z = \tan\dfrac{x}{2}$ (es decir, $x = 2\arctan z$) se cumple:</p>
+      <div class="caja-formula">$$\sin x = \frac{2z}{1 + z^2}, \qquad \cos x = \frac{1 - z^2}{1 + z^2}, \qquad dx = \frac{2\,dz}{1 + z^2}$$</div>
+      <h3>Pasos</h3>
+      <ol>
+        <li>Sustituye $\sin x$, $\cos x$ y $dx$ con las fórmulas de arriba.</li>
+        <li>Simplifica: queda una función racional de $z$.</li>
+        <li>Intégrala (fracciones parciales, módulo 15).</li>
+        <li>Regresa a $x$ con $z = \tan\dfrac{x}{2}$.</li>
+      </ol>
+      <div class="nota"><strong>Cuándo usarla:</strong> es el último recurso. Si la integral se resuelve con una sustitución $u = \sin x$ o $u = \cos x$, o con identidades (módulo 10), esos caminos son más cortos. La universal es la que siempre funciona para $\dfrac{1}{a + b\sin x + c\cos x}$.</div>
+    </section>
+
+    <!-- ===================== 2. VISUALIZADOR ===================== -->
+    <section id="visualizador" class="seccion">
+      <h2><span class="paso">2</span> <span>Visualizador interactivo: $f(x)$ y su antiderivada $F(x) + C$</span></h2>
+      <p>Estas integrales dan resultados con $\tan\frac{x}{2}$. Observa que las gráficas tienen asíntotas donde $x$ es múltiplo de $\pi$, que es donde $z = \tan\frac{x}{2}$ deja de existir.</p>
+      <div class="visualizador">
+        <div id="controles" class="controles">
+          <div class="control">
+            <label for="control-ejemplo">Ejemplo a graficar</label>
+            <select id="control-ejemplo"></select>
+          </div>
+          <div class="control">
+            <label for="control-c">Constante C = <span id="valor-c" class="valor-deslizador"></span></label>
+            <input id="control-c" type="range" min="-10" max="10" step="0.5" value="0">
+          </div>
+          <div class="control">
+            <label><input id="control-familia" type="checkbox" checked> Mostrar la familia F(x) + C</label>
+          </div>
+          <div class="control">
+            <label for="control-x">Punto para comparar pendientes: x = <span id="valor-x" class="valor-deslizador"></span></label>
+            <input id="control-x" type="range" min="0" max="100" step="1" value="50">
+            <span class="ayuda">La recta tangente a F en ese punto tiene pendiente f(x).</span>
+          </div>
+        </div>
+        <div>
+          <div id="grafica" class="grafica" role="img" aria-label="Gráfica de f(x) y de su antiderivada F(x) + C"></div>
+          <div id="resultados" class="resultados"></div>
+          <p id="formula-exacta"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 3. EJEMPLOS ===================== -->
+    <section id="ejemplos" class="seccion">
+      <h2><span class="paso">3</span> Ejemplos resueltos paso a paso</h2>
+
+      <article class="ejemplo">
+        <h3>Ejemplo XVIII.1 — $\displaystyle\int \frac{dx}{1 + \cos x}$</h3>
+        <ol>
+          <li>Sustituimos: $1 + \cos x = 1 + \dfrac{1 - z^2}{1 + z^2} = \dfrac{2}{1 + z^2}$.</li>
+          <li>La integral queda: $$\int \frac{2\,dz}{1+z^2}\cdot\frac{1+z^2}{2} = \int dz = z$$</li>
+          <li>Volvemos a $x$: $\displaystyle\int \frac{dx}{1 + \cos x} = \tan\frac{x}{2} + C$.</li>
+          <li>Comprobación: $\dfrac{d}{dx}\tan\dfrac{x}{2} = \dfrac12\sec^2\dfrac{x}{2} = \dfrac{1}{1 + \cos x}$ ✔ (porque $1 + \cos x = 2\cos^2\frac{x}{2}$)</li>
+        </ol>
+        <p class="resultado-final">$\displaystyle \tan\frac{x}{2} + C$</p>
+      </article>
+      <article class="ejemplo">
+        <h3>Ejemplo XVIII.2 — $\displaystyle\int \frac{dx}{\sin x}$</h3>
+        <ol>
+          <li>Sustituimos: $\sin x = \dfrac{2z}{1+z^2}$ y $dx = \dfrac{2\,dz}{1+z^2}$.</li>
+          <li>La integral queda: $$\int \frac{2\,dz}{1+z^2}\cdot\frac{1+z^2}{2z} = \int \frac{dz}{z} = \ln|z|$$</li>
+          <li>Volvemos a $x$: $\displaystyle\int \frac{dx}{\sin x} = \ln\left|\tan\frac{x}{2}\right| + C$ (es la integral de $\csc x$).</li>
+        </ol>
+        <p class="resultado-final">$\displaystyle \ln\left|\tan\frac{x}{2}\right| + C$</p>
+      </article>
+      <article class="ejemplo">
+        <h3>Ejemplo XVIII.3 — $\displaystyle\int \frac{dx}{3 + 5\sin x}$</h3>
+        <ol>
+          <li>Sustituimos: $3 + 5\sin x = 3 + \dfrac{10z}{1+z^2} = \dfrac{3z^2 + 10z + 3}{1 + z^2}$.</li>
+          <li>La integral queda: $$\int \frac{2\,dz}{3z^2 + 10z + 3} = 2\int \frac{dz}{(3z+1)(z+3)}$$</li>
+          <li>Fracciones parciales (caso 1): $\dfrac{1}{(3z+1)(z+3)} = \dfrac18\left(\dfrac{3}{3z+1} - \dfrac{1}{z+3}\right)$.</li>
+          <li>Integramos: $$2\cdot\frac18\Big[\ln|3z+1| - \ln|z+3|\Big] = \frac14\ln\left|\frac{3z+1}{z+3}\right|$$</li>
+          <li>Volvemos a $x$: $$\int \frac{dx}{3 + 5\sin x} = \frac14\ln\left|\frac{3\tan\frac{x}{2} + 1}{\tan\frac{x}{2} + 3}\right| + C$$</li>
+        </ol>
+        <p class="resultado-final">$\displaystyle \frac14\ln\left|\frac{3\tan\frac{x}{2} + 1}{\tan\frac{x}{2} + 3}\right| + C$</p>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

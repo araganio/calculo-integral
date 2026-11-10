@@ -1,5 +1,5 @@
 /**
- * Módulo 16 — Sólidos de revolución.
+ * Módulo 20 — Sólidos de revolución.
  *
  * Una región plana (entre y = f(x) y y = g(x), con x de a a b) gira alrededor
  * de un eje y genera un sólido. Tres métodos para su volumen:

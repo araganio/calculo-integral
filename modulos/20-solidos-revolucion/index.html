@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>16. Sólidos de Revolución · Cálculo Integral</title>
+  <title>20. Sólidos de Revolución · Cálculo Integral</title>
 
   <!-- Librerías externas (CDN): KaTeX para fórmulas y Plotly para gráficas -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
@@ -18,10 +18,10 @@
   <script defer src="../../assets/js/visualizador.js"></script>
   <script defer src="script.js"></script>
 </head>
-<body data-raiz="../../" data-modulo="16">
+<body data-raiz="../../" data-modulo="20">
   <main>
     <header class="cabecera-modulo">
-      <p class="migas">Módulo 16 · Fase 3 · Aplicaciones de la integral</p>
+      <p class="migas">Módulo 20 · Fase 3 · Aplicaciones de la integral</p>
       <h1>Sólidos de Revolución</h1>
       <p>Al girar una región plana alrededor de un eje se obtiene un sólido (una copa, un balón, una rosca). Su volumen se calcula sumando piezas muy delgadas: discos, arandelas o cascarones cilíndricos.</p>
       <nav class="indice-secciones" aria-label="Secciones del módulo">
@@ -34,7 +34,7 @@
     <!-- ===================== 1. TEORÍA ===================== -->
     <section id="teoria" class="seccion">
       <h2><span class="paso">1</span> Teoría</h2>
-      <p>Es un caso particular del módulo 15: las secciones del sólido son <strong>círculos</strong> (o anillos), y el área de un círculo de radio $R$ es $\pi R^2$.</p>
+      <p>Es un caso particular del módulo 19: las secciones del sólido son <strong>círculos</strong> (o anillos), y el área de un círculo de radio $R$ es $\pi R^2$.</p>
 
       <h3>Método de los discos (giro sobre el eje $x$, la región llega hasta el eje)</h3>
       <div class="caja-formula">$$V = \pi\int_a^b [f(x)]^2\,dx$$</div>
@@ -91,7 +91,7 @@
       <h2><span class="paso">3</span> Ejemplos resueltos paso a paso</h2>
 
       <article class="ejemplo">
-        <h3>Ejemplo XVI.1 — Discos: la región bajo $y = \sqrt{x}$, de $x = 0$ a $x = 4$, gira sobre el eje $x$</h3>
+        <h3>Ejemplo XX.1 — Discos: la región bajo $y = \sqrt{x}$, de $x = 0$ a $x = 4$, gira sobre el eje $x$</h3>
         <ol>
           <li>La región llega hasta el eje de giro, así que cada rebanada es un disco de radio $R = f(x) = \sqrt{x}$.</li>
           <li>Área del disco: $\pi R^2 = \pi\left(\sqrt{x}\right)^2 = \pi x$.</li>
@@ -101,7 +101,7 @@
       </article>
 
       <article class="ejemplo">
-        <h3>Ejemplo XVI.2 — Arandelas: la región entre $y = \sqrt{x}$ y $y = x^2$ gira sobre el eje $x$</h3>
+        <h3>Ejemplo XX.2 — Arandelas: la región entre $y = \sqrt{x}$ y $y = x^2$ gira sobre el eje $x$</h3>
         <ol>
           <li>Puntos de corte: $\sqrt{x} = x^2 \Rightarrow x = x^4 \Rightarrow x(1 - x^3) = 0$, es decir $x = 0$ y $x = 1$.</li>
           <li>En $[0, 1]$ la curva de arriba es $\sqrt{x}$ (radio exterior) y la de abajo es $x^2$ (radio interior).</li>
@@ -112,7 +112,7 @@
       </article>
 
       <article class="ejemplo">
-        <h3>Ejemplo XVI.3 — Cascarones: la región bajo $y = x^2$, de $x = 0$ a $x = 2$, gira sobre el eje $y$</h3>
+        <h3>Ejemplo XX.3 — Cascarones: la región bajo $y = x^2$, de $x = 0$ a $x = 2$, gira sobre el eje $y$</h3>
         <ol>
           <li>Los rectángulos verticales son paralelos al eje $y$, así que usamos cascarones: radio $x$, altura $x^2$.</li>
           <li>Volumen del cascarón: $2\pi\cdot x\cdot x^2\,dx = 2\pi x^3\,dx$.</li>

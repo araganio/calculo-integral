@@ -1,5 +1,5 @@
 /**
- * Módulo 15 — Volúmenes por secciones transversales conocidas.
+ * Módulo 19 — Volúmenes por secciones transversales conocidas.
  *
  * Una región plana sirve de base y sobre cada x se levanta una figura
  * (cuadrado, semicírculo o triángulo equilátero) cuyo lado/diámetro es la
