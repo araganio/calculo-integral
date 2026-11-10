@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>15. Volúmenes por Secciones · Cálculo Integral</title>
+
+  <!-- Librerías externas (CDN): KaTeX para fórmulas y Plotly para gráficas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
+
+  <!-- Código propio -->
+  <link rel="stylesheet" href="../../assets/css/styles.css">
+  <script defer src="../../assets/js/modulos.js"></script>
+  <script defer src="../../assets/js/layout.js"></script>
+  <script defer src="../../assets/js/visualizador.js"></script>
+  <script defer src="script.js"></script>
+</head>
+<body data-raiz="../../" data-modulo="15">
+  <main>
+    <header class="cabecera-modulo">
+      <p class="migas">Módulo 15 · Fase 3 · Aplicaciones de la integral</p>
+      <h1>Volúmenes por Secciones</h1>
+      <p>Si se conoce el área $A(x)$ de la sección que corta al sólido en cada $x$, el volumen es la "suma" de todas esas rebanadas: $V = \int A(x)\,dx$. Es la misma idea del área bajo la curva, pero una dimensión más arriba.</p>
+      <nav class="indice-secciones" aria-label="Secciones del módulo">
+        <a href="#teoria">1. Teoría</a>
+        <a href="#visualizador">2. Visualizador</a>
+        <a href="#ejemplos">3. Ejemplos resueltos</a>
+      </nav>
+    </header>
+
+    <!-- ===================== 1. TEORÍA ===================== -->
+    <section id="teoria" class="seccion">
+      <h2><span class="paso">1</span> Teoría</h2>
+      <p>Un sólido está entre $x = a$ y $x = b$. Si cada plano perpendicular al eje $x$ lo corta en una figura de área $A(x)$ (una función continua), entonces:</p>
+      <div class="caja-formula">$$V = \int_a^b A(x)\,dx$$</div>
+      <p><strong>Por qué funciona:</strong> una rebanada de grosor $\Delta x$ tiene volumen aproximado $A(x_i)\,\Delta x$. Sumar todas las rebanadas es una suma de Riemann, y al hacer $\Delta x \to 0$ se convierte en la integral.</p>
+
+      <h3>Área de la sección según la figura</h3>
+      <p>Cuando la sección está sobre la base, $s(x)$ es la longitud de la base en ese $x$ (la distancia entre las dos curvas que la limitan):</p>
+      <div class="contenedor-tabla" style="max-height:none">
+        <table class="tabla">
+          <thead><tr><th>Figura sobre la base $s(x)$</th><th>Área $A(x)$</th></tr></thead>
+          <tbody>
+            <tr><td style="text-align:left">Cuadrado de lado $s$</td><td>$s^2$</td></tr>
+            <tr><td style="text-align:left">Semicírculo de diámetro $s$</td><td>$\dfrac{\pi}{8}\,s^2$</td></tr>
+            <tr><td style="text-align:left">Triángulo equilátero de lado $s$</td><td>$\dfrac{\sqrt{3}}{4}\,s^2$</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Pasos para resolver un ejercicio</h3>
+      <ol>
+        <li>Dibuja la base y encuentra los límites $a$ y $b$.</li>
+        <li>Halla $s(x)$ = (curva superior) − (curva inferior).</li>
+        <li>Escribe $A(x)$ con la fórmula de la figura.</li>
+        <li>Integra $V = \int_a^b A(x)\,dx$.</li>
+      </ol>
+      <div class="nota"><strong>Si las secciones son perpendiculares al eje $y$,</strong> todo se hace igual pero con $A(y)$, $s(y)$ (la distancia entre curvas escritas como $x = g(y)$) y $dy$.</div>
+    </section>
+
+    <!-- ===================== 2. VISUALIZADOR ===================== -->
+    <section id="visualizador" class="seccion">
+      <h2><span class="paso">2</span> Visualizador interactivo: sólido en 3D y área $A(x)$</h2>
+      <p>Elige la base y la figura. Arriba ves el sólido armado con $n$ secciones (puedes girarlo con el mouse); abajo, la gráfica de $A(x)$ con los $n$ rectángulos de la suma. Al subir $n$ la suma se acerca al volumen exacto.</p>
+      <div class="visualizador">
+        <div id="controles" class="controles">
+          <div class="control">
+            <label for="control-base">Base (región en el plano xy)</label>
+            <select id="control-base"></select>
+          </div>
+          <div class="control">
+            <label for="control-forma">Figura de cada sección</label>
+            <select id="control-forma"></select>
+          </div>
+          <div class="control">
+            <label for="control-n">Número de secciones n = <span id="valor-n" class="valor-deslizador"></span></label>
+            <input id="control-n" type="range" min="2" max="40" step="1" value="12">
+          </div>
+        </div>
+        <div>
+          <div id="grafica-3d" class="grafica" style="min-height:440px" role="img" aria-label="Sólido formado por secciones transversales"></div>
+          <div id="grafica-area" class="grafica" style="margin-top:1rem" role="img" aria-label="Gráfica de A(x) con los rectángulos de la suma"></div>
+          <div id="resultados" class="resultados"></div>
+          <p id="formula-exacta"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 3. EJEMPLOS ===================== -->
+    <section id="ejemplos" class="seccion">
+      <h2><span class="paso">3</span> Ejemplos resueltos paso a paso</h2>
+
+      <article class="ejemplo">
+        <h3>Ejemplo XV.1 — Base: círculo $x^2 + y^2 = 1$; secciones: triángulos equiláteros</h3>
+        <ol>
+          <li>La base es el círculo de radio 1, así que $x$ va de $-1$ a $1$.</li>
+          <li>En cada $x$, la base mide la cuerda de lado a lado: $$s(x) = 2\sqrt{1 - x^2}$$ y ese es el lado del triángulo.</li>
+          <li>Área de un triángulo equilátero de lado $s$: $$A(x) = \frac{\sqrt{3}}{4}\,s^2 = \frac{\sqrt{3}}{4}\cdot 4(1 - x^2) = \sqrt{3}\,(1 - x^2)$$</li>
+          <li>Integramos (la función es par, por eso se duplica la mitad): $$V = \int_{-1}^{1} \sqrt{3}\,(1 - x^2)\,dx = 2\sqrt{3}\left[x - \frac{x^3}{3}\right]_0^1 = 2\sqrt{3}\cdot\frac{2}{3}$$</li>
+        </ol>
+        <p class="resultado-final">$\displaystyle V = \frac{4\sqrt{3}}{3} \approx 2.3094$ unidades cúbicas</p>
+      </article>
+
+      <article class="ejemplo">
+        <h3>Ejemplo XV.2 — Base: región del primer cuadrante bajo $y = 1 - \dfrac{x^2}{4}$; secciones: cuadrados</h3>
+        <ol>
+          <li>La curva corta el eje $x$ cuando $1 - \dfrac{x^2}{4} = 0$, o sea en $x = 2$. Por lo tanto $x$ va de $0$ a $2$.</li>
+          <li>La base mide la altura de la curva en cada $x$ (el borde inferior es el eje $x$): $$s(x) = 1 - \frac{x^2}{4}$$</li>
+          <li>Área del cuadrado: $$A(x) = s^2 = \left(1 - \frac{x^2}{4}\right)^2 = 1 - \frac{x^2}{2} + \frac{x^4}{16}$$</li>
+          <li>Integramos: $$V = \int_0^2 \left(1 - \frac{x^2}{2} + \frac{x^4}{16}\right) dx = \left[x - \frac{x^3}{6} + \frac{x^5}{80}\right]_0^2 = 2 - \frac{8}{6} + \frac{32}{80}$$</li>
+          <li>Con denominador común 15: $\dfrac{30 - 20 + 6}{15} = \dfrac{16}{15}$.</li>
+        </ol>
+        <p class="resultado-final">$\displaystyle V = \frac{16}{15} \approx 1.0667$ unidades cúbicas</p>
+      </article>
+
+      <article class="ejemplo">
+        <h3>Ejemplo XV.3 — Base: círculo $x^2 + y^2 = 1$; secciones: semicírculos</h3>
+        <ol>
+          <li>Igual que en XV.1: $x \in [-1, 1]$ y el diámetro del semicírculo es $s(x) = 2\sqrt{1 - x^2}$.</li>
+          <li>Su radio es $r = \sqrt{1 - x^2}$, y el área de un semicírculo es $\tfrac12\pi r^2$: $$A(x) = \frac{\pi}{2}\,(1 - x^2)$$</li>
+          <li>Integramos: $$V = \frac{\pi}{2}\int_{-1}^{1} (1 - x^2)\,dx = \frac{\pi}{2}\cdot\frac{4}{3}$$</li>
+        </ol>
+        <p class="resultado-final">$\displaystyle V = \frac{2\pi}{3} \approx 2.0944$ unidades cúbicas</p>
+        <p>Compruébalo en el visualizador: elige "Círculo" con "Semicírculos" y mira que el volumen exacto coincide.</p>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

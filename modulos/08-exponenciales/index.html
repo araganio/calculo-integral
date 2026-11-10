@@ -5,28 +5,97 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>8. Integrales Exponenciales · Cálculo Integral</title>
 
+  <!-- Librerías externas (CDN): KaTeX para fórmulas y Plotly para gráficas -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
 
+  <!-- Código propio -->
   <link rel="stylesheet" href="../../assets/css/styles.css">
   <script defer src="../../assets/js/modulos.js"></script>
   <script defer src="../../assets/js/layout.js"></script>
+  <script defer src="../../assets/js/visualizador.js"></script>
+  <script defer src="../../assets/js/ejemplos-integrales.js"></script>
+  <script defer src="../../assets/js/antiderivadas.js"></script>
 </head>
 <body data-raiz="../../" data-modulo="8">
-  <!-- Módulo en construcción: se desarrollará en la Fase 2 -->
   <main>
     <header class="cabecera-modulo">
-      <p class="migas">Módulo 8 · Fase 2</p>
+      <p class="migas">Módulo 8 · Fase 2 · Integral indefinida</p>
       <h1>Integrales Exponenciales</h1>
+      <p>La función $e^x$ es su propia derivada, así que también es su propia integral. Con una sustitución sencilla se resuelven $e^{u}$ y $a^{u}$.</p>
+      <nav class="indice-secciones" aria-label="Secciones del módulo">
+        <a href="#teoria">1. Teoría</a>
+        <a href="#visualizador">2. Visualizador</a>
+        <a href="#ejemplos">3. Ejemplos resueltos</a>
+      </nav>
     </header>
 
-    <section class="seccion placeholder">
-      <div class="icono">∫</div>
-      <h2>Integrales Exponenciales</h2>
-      <div class="mensaje-proximamente">Próximamente - Fase 2</div>
-      <p>Este módulo se desarrollará en la Fase 2 del proyecto, con teoría, un visualizador interactivo y ejemplos resueltos paso a paso.</p>
-      <p>Adelanto de la fórmula clave: $\int e^{u}\,du = e^{u} + C$</p>
+    <!-- ===================== 1. TEORÍA ===================== -->
+    <section id="teoria" class="seccion">
+      <h2><span class="paso">1</span> Teoría</h2>
+      <p>Las dos fórmulas básicas, con $u = g(x)$ y $du = g'(x)\,dx$:</p>
+      <div class="caja-formula">$$\int e^{u}\,du = e^{u} + C \qquad\qquad \int a^{u}\,du = \frac{a^{u}}{\ln a} + C \quad (a > 0,\ a \neq 1)$$</div>
+      <p>Si el exponente es lineal, $\displaystyle\int e^{kx}\,dx = \frac{e^{kx}}{k} + C$: dividimos entre la derivada del exponente.</p>
+      <div class="nota"><strong>Para $a^x$:</strong> $a^x = e^{x\ln a}$, por eso aparece $\ln a$ en el denominador. Con $a = e$ da $\ln e = 1$ y se recupera la primera fórmula.</div>
+    </section>
+
+    <!-- ===================== 2. VISUALIZADOR ===================== -->
+    <section id="visualizador" class="seccion">
+      <h2><span class="paso">2</span> <span>Visualizador interactivo: $f(x)$ y su antiderivada $F(x) + C$</span></h2>
+      <p>Observa que la exponencial crece muy rápido: la antiderivada de $e^{3x}$ es $e^{3x}/3$, una curva parecida pero 3 veces más "plana". La tangente a $F$ siempre tiene pendiente $f(x)$.</p>
+      <div class="visualizador">
+        <div id="controles" class="controles">
+          <div class="control">
+            <label for="control-ejemplo">Ejemplo a graficar</label>
+            <select id="control-ejemplo"></select>
+          </div>
+          <div class="control">
+            <label for="control-c">Constante C = <span id="valor-c" class="valor-deslizador"></span></label>
+            <input id="control-c" type="range" min="-10" max="10" step="0.5" value="0">
+          </div>
+          <div class="control">
+            <label><input id="control-familia" type="checkbox" checked> Mostrar la familia F(x) + C</label>
+          </div>
+          <div class="control">
+            <label for="control-x">Punto para comparar pendientes: x = <span id="valor-x" class="valor-deslizador"></span></label>
+            <input id="control-x" type="range" min="0" max="100" step="1" value="50">
+            <span class="ayuda">La recta tangente a F en ese punto tiene pendiente f(x).</span>
+          </div>
+        </div>
+        <div>
+          <div id="grafica" class="grafica" role="img" aria-label="Gráfica de f(x) y de su antiderivada F(x) + C"></div>
+          <div id="resultados" class="resultados"></div>
+          <p id="formula-exacta"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 3. EJEMPLOS ===================== -->
+    <section id="ejemplos" class="seccion">
+      <h2><span class="paso">3</span> Ejemplos resueltos paso a paso</h2>
+
+      <article class="ejemplo">
+        <h3>Ejemplo VIII.1 — $\displaystyle\int e^{3x}\,dx$</h3>
+        <ol>
+          <li>Elegimos $u = 3x$, entonces $du = 3\,dx$ y $dx = \tfrac13\,du$.</li>
+          <li>Sustituimos: $$\frac13\int e^{u}\,du = \frac13\,e^{u}$$</li>
+          <li>Volvemos a $x$: $\displaystyle\int e^{3x}\,dx = \frac{e^{3x}}{3} + C$.</li>
+          <li>Comprobación: $\dfrac{d}{dx}\dfrac{e^{3x}}{3} = e^{3x}$ ✔</li>
+        </ol>
+        <p class="resultado-final">$\displaystyle \frac{e^{3x}}{3} + C$</p>
+      </article>
+      <article class="ejemplo">
+        <h3>Ejemplo VIII.2 — $\displaystyle\int x\,e^{x^2}\,dx$</h3>
+        <ol>
+          <li>Elegimos $u = x^2$, así $du = 2x\,dx$ y $x\,dx = \tfrac12\,du$.</li>
+          <li>Sustituimos: $$\frac12\int e^{u}\,du = \frac12\,e^{u}$$</li>
+          <li>Volvemos a $x$: $\displaystyle\int x\,e^{x^2}\,dx = \frac{e^{x^2}}{2} + C$.</li>
+          <li>Comprobación: $\dfrac{d}{dx}\dfrac{e^{x^2}}{2} = \dfrac{2x\,e^{x^2}}{2} = x\,e^{x^2}$ ✔</li>
+        </ol>
+        <p class="resultado-final">$\displaystyle \frac{e^{x^2}}{2} + C$</p>
+      </article>
     </section>
   </main>
 </body>

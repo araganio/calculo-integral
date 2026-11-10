@@ -5,28 +5,98 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>12. Hiperbólicas Inversas · Cálculo Integral</title>
 
+  <!-- Librerías externas (CDN): KaTeX para fórmulas y Plotly para gráficas -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
 
+  <!-- Código propio -->
   <link rel="stylesheet" href="../../assets/css/styles.css">
   <script defer src="../../assets/js/modulos.js"></script>
   <script defer src="../../assets/js/layout.js"></script>
+  <script defer src="../../assets/js/visualizador.js"></script>
+  <script defer src="../../assets/js/ejemplos-integrales.js"></script>
+  <script defer src="../../assets/js/antiderivadas.js"></script>
 </head>
 <body data-raiz="../../" data-modulo="12">
-  <!-- Módulo en construcción: se desarrollará en la Fase 3 -->
   <main>
     <header class="cabecera-modulo">
-      <p class="migas">Módulo 12 · Fase 3</p>
+      <p class="migas">Módulo 12 · Fase 3 · Integral indefinida</p>
       <h1>Hiperbólicas Inversas</h1>
+      <p>Las funciones hiperbólicas inversas ($\operatorname{senh}^{-1}$, $\cosh^{-1}$, $\tanh^{-1}$) se pueden escribir con logaritmos, y aparecen al integrar $\frac{1}{\sqrt{u^2 \pm a^2}}$ y $\frac{1}{a^2 - u^2}$.</p>
+      <nav class="indice-secciones" aria-label="Secciones del módulo">
+        <a href="#teoria">1. Teoría</a>
+        <a href="#visualizador">2. Visualizador</a>
+        <a href="#ejemplos">3. Ejemplos resueltos</a>
+      </nav>
     </header>
 
-    <section class="seccion placeholder fase-3-placeholder">
-      <div class="icono">∫</div>
-      <h2>Hiperbólicas Inversas</h2>
-      <div class="mensaje-proximamente">Próximamente - Fase 3</div>
-      <p>Este módulo se desarrollará en la Fase 3 del proyecto, con teoría, un visualizador interactivo y ejemplos resueltos paso a paso.</p>
-      <p>Adelanto de la fórmula clave: $\int \frac{du}{\sqrt{u^2+a^2}} = \operatorname{arsinh}\frac{u}{a} + C$</p>
+    <!-- ===================== 1. TEORÍA ===================== -->
+    <section id="teoria" class="seccion">
+      <h2><span class="paso">1</span> Teoría</h2>
+      <p>Con $a > 0$ y $u = g(x)$:</p>
+      <div class="caja-formula">$$\int \frac{du}{\sqrt{u^2 + a^2}} = \ln\left(u + \sqrt{u^2 + a^2}\right) + C = \operatorname{senh}^{-1}\frac{u}{a} + C$$
+        $$\int \frac{du}{\sqrt{u^2 - a^2}} = \ln\left|u + \sqrt{u^2 - a^2}\right| + C \qquad (|u| > a)$$
+        $$\int \frac{du}{a^2 - u^2} = \frac{1}{2a}\ln\left|\frac{a + u}{a - u}\right| + C = \frac{1}{a}\tanh^{-1}\frac{u}{a} + C \qquad (|u| < a)$$</div>
+      <div class="nota"><strong>¿Por qué logaritmos?</strong> $\operatorname{senh} y = \dfrac{e^y - e^{-y}}{2}$ es una combinación de exponenciales; al despejar $y$ en $x = \operatorname{senh} y$ aparece $\ln$. Por eso en un examen puedes dejar la respuesta con $\ln$ o con la función inversa.</div>
+      <p>El procedimiento es el mismo de siempre: identifica $a$ y $u$, calcula $du$, aplica la fórmula y regresa a $x$.</p>
+    </section>
+
+    <!-- ===================== 2. VISUALIZADOR ===================== -->
+    <section id="visualizador" class="seccion">
+      <h2><span class="paso">2</span> <span>Visualizador interactivo: $f(x)$ y su antiderivada $F(x) + C$</span></h2>
+      <p>Las tres antiderivadas son logaritmos disfrazados. Por ejemplo $\operatorname{senh}^{-1}x = \ln(x + \sqrt{x^2+1})$ crece muy despacio, igual que $\ln$.</p>
+      <div class="visualizador">
+        <div id="controles" class="controles">
+          <div class="control">
+            <label for="control-ejemplo">Ejemplo a graficar</label>
+            <select id="control-ejemplo"></select>
+          </div>
+          <div class="control">
+            <label for="control-c">Constante C = <span id="valor-c" class="valor-deslizador"></span></label>
+            <input id="control-c" type="range" min="-10" max="10" step="0.5" value="0">
+          </div>
+          <div class="control">
+            <label><input id="control-familia" type="checkbox" checked> Mostrar la familia F(x) + C</label>
+          </div>
+          <div class="control">
+            <label for="control-x">Punto para comparar pendientes: x = <span id="valor-x" class="valor-deslizador"></span></label>
+            <input id="control-x" type="range" min="0" max="100" step="1" value="50">
+            <span class="ayuda">La recta tangente a F en ese punto tiene pendiente f(x).</span>
+          </div>
+        </div>
+        <div>
+          <div id="grafica" class="grafica" role="img" aria-label="Gráfica de f(x) y de su antiderivada F(x) + C"></div>
+          <div id="resultados" class="resultados"></div>
+          <p id="formula-exacta"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 3. EJEMPLOS ===================== -->
+    <section id="ejemplos" class="seccion">
+      <h2><span class="paso">3</span> Ejemplos resueltos paso a paso</h2>
+
+      <article class="ejemplo">
+        <h3>Ejemplo XII.1 — $\displaystyle\int \frac{dx}{\sqrt{x^2 + 9}}$</h3>
+        <ol>
+          <li>Tiene la forma $\sqrt{u^2 + a^2}$ con $a = 3$ y $u = x$ ($du = dx$).</li>
+          <li>Aplicamos la fórmula: $$\int \frac{dx}{\sqrt{x^2 + 9}} = \ln\left(x + \sqrt{x^2 + 9}\right) + C$$</li>
+          <li>Comprobación: $\dfrac{d}{dx}\ln\left(x + \sqrt{x^2+9}\right) = \dfrac{1 + \frac{x}{\sqrt{x^2+9}}}{x + \sqrt{x^2+9}} = \dfrac{1}{\sqrt{x^2+9}}$ ✔</li>
+        </ol>
+        <p class="resultado-final">$\displaystyle \ln\left(x + \sqrt{x^2 + 9}\right) + C = \operatorname{senh}^{-1}\frac{x}{3} + C$</p>
+      </article>
+      <article class="ejemplo">
+        <h3>Ejemplo XII.2 — $\displaystyle\int \frac{dx}{1 - 4x^2}$</h3>
+        <ol>
+          <li>Tiene la forma $a^2 - u^2$ con $a = 1$ y $u = 2x$, así $du = 2\,dx$ y $dx = \tfrac12\,du$.</li>
+          <li>Sustituimos: $$\frac12\int \frac{du}{1 - u^2} = \frac12\cdot\frac{1}{2}\ln\left|\frac{1 + u}{1 - u}\right|$$</li>
+          <li>Volvemos a $x$: $\displaystyle\int \frac{dx}{1 - 4x^2} = \frac14\ln\left|\frac{1 + 2x}{1 - 2x}\right| + C$.</li>
+          <li>Comprobación: $\dfrac{d}{dx}\,\dfrac14\left[\ln|1+2x| - \ln|1-2x|\right] = \dfrac14\left[\dfrac{2}{1+2x} + \dfrac{2}{1-2x}\right] = \dfrac{1}{1 - 4x^2}$ ✔</li>
+        </ol>
+        <p class="resultado-final">$\displaystyle \frac14\ln\left|\frac{1 + 2x}{1 - 2x}\right| + C$</p>
+      </article>
     </section>
   </main>
 </body>

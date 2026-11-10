@@ -5,28 +5,103 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>9. Integrales Logarítmicas · Cálculo Integral</title>
 
+  <!-- Librerías externas (CDN): KaTeX para fórmulas y Plotly para gráficas -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
 
+  <!-- Código propio -->
   <link rel="stylesheet" href="../../assets/css/styles.css">
   <script defer src="../../assets/js/modulos.js"></script>
   <script defer src="../../assets/js/layout.js"></script>
+  <script defer src="../../assets/js/visualizador.js"></script>
+  <script defer src="../../assets/js/ejemplos-integrales.js"></script>
+  <script defer src="../../assets/js/antiderivadas.js"></script>
 </head>
 <body data-raiz="../../" data-modulo="9">
-  <!-- Módulo en construcción: se desarrollará en la Fase 2 -->
   <main>
     <header class="cabecera-modulo">
-      <p class="migas">Módulo 9 · Fase 2</p>
+      <p class="migas">Módulo 9 · Fase 2 · Integral indefinida</p>
       <h1>Integrales Logarítmicas</h1>
+      <p>Cuando el numerador es (un múltiplo de) la derivada del denominador, la integral es un logaritmo: $\int \frac{du}{u} = \ln|u| + C$.</p>
+      <nav class="indice-secciones" aria-label="Secciones del módulo">
+        <a href="#teoria">1. Teoría</a>
+        <a href="#visualizador">2. Visualizador</a>
+        <a href="#ejemplos">3. Ejemplos resueltos</a>
+      </nav>
     </header>
 
-    <section class="seccion placeholder">
-      <div class="icono">∫</div>
-      <h2>Integrales Logarítmicas</h2>
-      <div class="mensaje-proximamente">Próximamente - Fase 2</div>
-      <p>Este módulo se desarrollará en la Fase 2 del proyecto, con teoría, un visualizador interactivo y ejemplos resueltos paso a paso.</p>
-      <p>Adelanto de la fórmula clave: $\int \frac{du}{u} = \ln|u| + C$</p>
+    <!-- ===================== 1. TEORÍA ===================== -->
+    <section id="teoria" class="seccion">
+      <h2><span class="paso">1</span> Teoría</h2>
+      <p>La integral que completa la regla de la potencia (el caso $n = -1$):</p>
+      <div class="caja-formula">$$\int \frac{du}{u} = \ln|u| + C \qquad\Longrightarrow\qquad \int \frac{g'(x)}{g(x)}\,dx = \ln|g(x)| + C$$</div>
+      <h3>Cómo reconocerla</h3>
+      <ul>
+        <li>Mira el denominador y deriva mentalmente: si el numerador es esa derivada (salvo una constante), el resultado es $\ln|\text{denominador}|$.</li>
+        <li>Si falta una constante, se compensa fuera de la integral (como en una sustitución).</li>
+        <li>El <strong>valor absoluto</strong> es necesario porque $\ln$ solo existe para positivos, pero $\dfrac{1}{u}$ está definida también para $u < 0$.</li>
+      </ul>
+      <div class="nota"><strong>Caso especial:</strong> $\displaystyle\int \frac{dx}{x\ln x} = \ln|\ln x| + C$, con $u = \ln x$ y $du = \dfrac{dx}{x}$.</div>
+    </section>
+
+    <!-- ===================== 2. VISUALIZADOR ===================== -->
+    <section id="visualizador" class="seccion">
+      <h2><span class="paso">2</span> <span>Visualizador interactivo: $f(x)$ y su antiderivada $F(x) + C$</span></h2>
+      <p>Fíjate en las asíntotas: $f$ no está definida donde se anula el denominador, y $F = \ln|\cdot|$ tampoco. El valor absoluto permite integrar a ambos lados de la asíntota.</p>
+      <div class="visualizador">
+        <div id="controles" class="controles">
+          <div class="control">
+            <label for="control-ejemplo">Ejemplo a graficar</label>
+            <select id="control-ejemplo"></select>
+          </div>
+          <div class="control">
+            <label for="control-c">Constante C = <span id="valor-c" class="valor-deslizador"></span></label>
+            <input id="control-c" type="range" min="-10" max="10" step="0.5" value="0">
+          </div>
+          <div class="control">
+            <label><input id="control-familia" type="checkbox" checked> Mostrar la familia F(x) + C</label>
+          </div>
+          <div class="control">
+            <label for="control-x">Punto para comparar pendientes: x = <span id="valor-x" class="valor-deslizador"></span></label>
+            <input id="control-x" type="range" min="0" max="100" step="1" value="50">
+            <span class="ayuda">La recta tangente a F en ese punto tiene pendiente f(x).</span>
+          </div>
+        </div>
+        <div>
+          <div id="grafica" class="grafica" role="img" aria-label="Gráfica de f(x) y de su antiderivada F(x) + C"></div>
+          <div id="resultados" class="resultados"></div>
+          <p id="formula-exacta"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 3. EJEMPLOS ===================== -->
+    <section id="ejemplos" class="seccion">
+      <h2><span class="paso">3</span> Ejemplos resueltos paso a paso</h2>
+
+      <article class="ejemplo">
+        <h3>Ejemplo IX.1 — $\displaystyle\int \frac{dx}{2x+1}$</h3>
+        <ol>
+          <li>Elegimos $u = 2x + 1$, entonces $du = 2\,dx$ y $dx = \tfrac12\,du$.</li>
+          <li>Sustituimos: $$\frac12\int \frac{du}{u} = \frac12\ln|u|$$</li>
+          <li>Volvemos a $x$: $\displaystyle\int \frac{dx}{2x+1} = \frac12\ln|2x+1| + C$.</li>
+          <li>Comprobación: $\dfrac{d}{dx}\left(\dfrac12\ln|2x+1|\right) = \dfrac12\cdot\dfrac{2}{2x+1} = \dfrac{1}{2x+1}$ ✔</li>
+        </ol>
+        <p class="resultado-final">$\displaystyle \frac12\ln|2x+1| + C$</p>
+      </article>
+      <article class="ejemplo">
+        <h3>Ejemplo IX.2 — $\displaystyle\int \frac{x^2}{x^3+1}\,dx$</h3>
+        <ol>
+          <li>La derivada del denominador es $3x^2$; el numerador es $x^2$, o sea un tercio de ella.</li>
+          <li>Elegimos $u = x^3 + 1$, así $du = 3x^2\,dx$ y $x^2\,dx = \tfrac13\,du$.</li>
+          <li>Sustituimos: $$\frac13\int \frac{du}{u} = \frac13\ln|u|$$</li>
+          <li>Volvemos a $x$: $\displaystyle\int \frac{x^2}{x^3+1}\,dx = \frac13\ln|x^3+1| + C$.</li>
+          <li>Comprobación: $\dfrac{d}{dx}\left(\dfrac13\ln|x^3+1|\right) = \dfrac13\cdot\dfrac{3x^2}{x^3+1} = \dfrac{x^2}{x^3+1}$ ✔</li>
+        </ol>
+        <p class="resultado-final">$\displaystyle \frac13\ln|x^3+1| + C$</p>
+      </article>
     </section>
   </main>
 </body>

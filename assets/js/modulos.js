@@ -1,5 +1,5 @@
 /**
- * modulos.js — Lista única de los 14 módulos de la plataforma.
+ * modulos.js — Lista única de los 16 módulos de la plataforma.
  *
  * Es la "fuente de verdad" del sitio: el menú de navegación, las tarjetas
  * de la página de inicio y los botones "Anterior / Siguiente" se generan
@@ -7,7 +7,7 @@
  * Fase 2 o 3 solo hay que editar este archivo (y crear su carpeta).
  *
  * Campos de cada módulo:
- *  - numero:      número del módulo (1 a 14)
+ *  - numero:      número del módulo (1 a 16)
  *  - carpeta:     nombre de la carpeta dentro de /modulos
  *  - nombre:      título que se muestra en el menú y en las tarjetas
  *  - fase:        fase del proyecto en la que se desarrolla (1, 2 o 3)
@@ -27,20 +27,24 @@ const MODULOS = [
     descripcion: 'Teorema Fundamental del Cálculo, área bajo la curva y área entre curvas.' },
   { numero: 6, carpeta: '06-integracion-directa', nombre: 'Integración Directa', fase: 1, disponible: true,
     descripcion: 'Regla de la potencia, linealidad y la familia de antiderivadas F(x) + C.' },
-  { numero: 7, carpeta: '07-sustitucion', nombre: 'Integración por Sustitución', fase: 2, disponible: false,
+  { numero: 7, carpeta: '07-sustitucion', nombre: 'Integración por Sustitución', fase: 2, disponible: true,
     descripcion: 'Cambio de variable u = g(x) para simplificar integrales.' },
-  { numero: 8, carpeta: '08-exponenciales', nombre: 'Integrales Exponenciales', fase: 2, disponible: false,
+  { numero: 8, carpeta: '08-exponenciales', nombre: 'Integrales Exponenciales', fase: 2, disponible: true,
     descripcion: 'Integrales con funciones de la forma eˣ y aˣ.' },
-  { numero: 9, carpeta: '09-logaritmicas', nombre: 'Integrales Logarítmicas', fase: 2, disponible: false,
+  { numero: 9, carpeta: '09-logaritmicas', nombre: 'Integrales Logarítmicas', fase: 2, disponible: true,
     descripcion: 'Integrales que conducen a ln|u|.' },
-  { numero: 10, carpeta: '10-trigonometricas', nombre: 'Integrales Trigonométricas', fase: 2, disponible: false,
+  { numero: 10, carpeta: '10-trigonometricas', nombre: 'Integrales Trigonométricas', fase: 2, disponible: true,
     descripcion: 'Integrales de seno, coseno, tangente y sus potencias.' },
-  { numero: 11, carpeta: '11-trigonometricas-inversas', nombre: 'Trigonométricas Inversas', fase: 3, disponible: false,
+  { numero: 11, carpeta: '11-trigonometricas-inversas', nombre: 'Trigonométricas Inversas', fase: 3, disponible: true,
     descripcion: 'Integrales que dan como resultado arcsen, arctan y arcsec.' },
-  { numero: 12, carpeta: '12-hiperbolicas-inversas', nombre: 'Hiperbólicas Inversas', fase: 3, disponible: false,
+  { numero: 12, carpeta: '12-hiperbolicas-inversas', nombre: 'Hiperbólicas Inversas', fase: 3, disponible: true,
     descripcion: 'Integrales que dan como resultado funciones hiperbólicas inversas.' },
-  { numero: 13, carpeta: '13-trinomio-cuadratico', nombre: 'Trinomio Cuadrático', fase: 3, disponible: false,
+  { numero: 13, carpeta: '13-trinomio-cuadratico', nombre: 'Trinomio Cuadrático', fase: 3, disponible: true,
     descripcion: 'Completar el cuadrado para integrar expresiones ax² + bx + c.' },
-  { numero: 14, carpeta: '14-integracion-por-partes', nombre: 'Integración por Partes', fase: 3, disponible: false,
-    descripcion: 'La fórmula ∫u dv = uv − ∫v du y sus aplicaciones.' }
+  { numero: 14, carpeta: '14-integracion-por-partes', nombre: 'Integración por Partes', fase: 3, disponible: true,
+    descripcion: 'La fórmula ∫u dv = uv − ∫v du y sus aplicaciones.' },
+  { numero: 15, carpeta: '15-volumenes-secciones', nombre: 'Volúmenes por Secciones', fase: 3, disponible: true,
+    descripcion: 'Apila secciones transversales conocidas (cuadrados, semicírculos, triángulos) para hallar el volumen.' },
+  { numero: 16, carpeta: '16-solidos-revolucion', nombre: 'Sólidos de Revolución', fase: 3, disponible: true,
+    descripcion: 'Discos, arandelas y cascarones cilíndricos: el volumen de una región al girar sobre un eje.' }
 ];

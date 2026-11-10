@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>16. Sólidos de Revolución · Cálculo Integral</title>
+
+  <!-- Librerías externas (CDN): KaTeX para fórmulas y Plotly para gráficas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
+
+  <!-- Código propio -->
+  <link rel="stylesheet" href="../../assets/css/styles.css">
+  <script defer src="../../assets/js/modulos.js"></script>
+  <script defer src="../../assets/js/layout.js"></script>
+  <script defer src="../../assets/js/visualizador.js"></script>
+  <script defer src="script.js"></script>
+</head>
+<body data-raiz="../../" data-modulo="16">
+  <main>
+    <header class="cabecera-modulo">
+      <p class="migas">Módulo 16 · Fase 3 · Aplicaciones de la integral</p>
+      <h1>Sólidos de Revolución</h1>
+      <p>Al girar una región plana alrededor de un eje se obtiene un sólido (una copa, un balón, una rosca). Su volumen se calcula sumando piezas muy delgadas: discos, arandelas o cascarones cilíndricos.</p>
+      <nav class="indice-secciones" aria-label="Secciones del módulo">
+        <a href="#teoria">1. Teoría</a>
+        <a href="#visualizador">2. Visualizador</a>
+        <a href="#ejemplos">3. Ejemplos resueltos</a>
+      </nav>
+    </header>
+
+    <!-- ===================== 1. TEORÍA ===================== -->
+    <section id="teoria" class="seccion">
+      <h2><span class="paso">1</span> Teoría</h2>
+      <p>Es un caso particular del módulo 15: las secciones del sólido son <strong>círculos</strong> (o anillos), y el área de un círculo de radio $R$ es $\pi R^2$.</p>
+
+      <h3>Método de los discos (giro sobre el eje $x$, la región llega hasta el eje)</h3>
+      <div class="caja-formula">$$V = \pi\int_a^b [f(x)]^2\,dx$$</div>
+      <p>Cada rebanada perpendicular al eje es un disco de radio $f(x)$ y grosor $dx$.</p>
+
+      <h3>Método de las arandelas (giro sobre el eje $x$, la región tiene un "hueco")</h3>
+      <div class="caja-formula">$$V = \pi\int_a^b \Big([f(x)]^2 - [g(x)]^2\Big)\,dx \qquad (f \geq g \geq 0)$$</div>
+      <p>La rebanada es un anillo: radio exterior $f(x)$ y radio interior $g(x)$. Se resta el disco interior al exterior. <strong>Ojo:</strong> se restan los <em>cuadrados</em>, no $\pi\int (f-g)^2$.</p>
+
+      <h3>Método de los cascarones cilíndricos (giro sobre el eje $y$)</h3>
+      <div class="caja-formula">$$V = 2\pi\int_a^b x\,\big(f(x) - g(x)\big)\,dx$$</div>
+      <p>Cada rectángulo vertical de la región, al girar, forma un cilindro hueco ("cascarón") de radio $x$, altura $f(x) - g(x)$ y espesor $dx$. Su volumen es aproximadamente $2\pi x\cdot\text{altura}\cdot dx$ (la longitud de la circunferencia por la altura por el espesor).</p>
+
+      <h3>¿Qué método elegir?</h3>
+      <ul>
+        <li>Rectángulos <strong>perpendiculares</strong> al eje de giro → discos o arandelas.</li>
+        <li>Rectángulos <strong>paralelos</strong> al eje de giro → cascarones.</li>
+        <li>Si el eje es el $y$ y no quieres cascarones, puedes usar discos o arandelas despejando $x = h(y)$ e integrando respecto a $y$: el resultado es el mismo.</li>
+      </ul>
+      <div class="nota"><strong>Comprobación:</strong> el volumen es siempre positivo. Y conviene estimarlo: debe ser menor que el volumen del cilindro que contiene al sólido.</div>
+    </section>
+
+    <!-- ===================== 2. VISUALIZADOR ===================== -->
+    <section id="visualizador" class="seccion">
+      <h2><span class="paso">2</span> Visualizador interactivo: región, sólido en 3D y suma de piezas</h2>
+      <p>Elige un ejemplo. Arriba ves la región con sus $n$ rectángulos y el eje de giro; abajo, el sólido en 3D (gíralo con el mouse). Baja el <strong>ángulo de giro</strong> para "abrir" el sólido y ver su interior. Al subir $n$, la suma de piezas se acerca al volumen exacto.</p>
+      <div class="visualizador">
+        <div id="controles" class="controles">
+          <div class="control">
+            <label for="control-ejemplo">Ejemplo</label>
+            <select id="control-ejemplo"></select>
+          </div>
+          <div class="control">
+            <label for="control-n">Número de piezas n = <span id="valor-n" class="valor-deslizador"></span></label>
+            <input id="control-n" type="range" min="2" max="40" step="1" value="10">
+          </div>
+          <div class="control">
+            <label for="control-angulo">Ángulo de giro = <span id="valor-angulo" class="valor-deslizador"></span></label>
+            <input id="control-angulo" type="range" min="60" max="360" step="15" value="270">
+            <span class="ayuda">Con 360° el sólido está completo.</span>
+          </div>
+        </div>
+        <div>
+          <div id="grafica-region" class="grafica" role="img" aria-label="Región plana con los rectángulos representativos y el eje de giro"></div>
+          <div id="grafica-3d" class="grafica" style="min-height:440px;margin-top:1rem" role="img" aria-label="Sólido de revolución en 3D"></div>
+          <div id="resultados" class="resultados"></div>
+          <p id="formula-exacta"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 3. EJEMPLOS ===================== -->
+    <section id="ejemplos" class="seccion">
+      <h2><span class="paso">3</span> Ejemplos resueltos paso a paso</h2>
+
+      <article class="ejemplo">
+        <h3>Ejemplo XVI.1 — Discos: la región bajo $y = \sqrt{x}$, de $x = 0$ a $x = 4$, gira sobre el eje $x$</h3>
+        <ol>
+          <li>La región llega hasta el eje de giro, así que cada rebanada es un disco de radio $R = f(x) = \sqrt{x}$.</li>
+          <li>Área del disco: $\pi R^2 = \pi\left(\sqrt{x}\right)^2 = \pi x$.</li>
+          <li>Integramos: $$V = \pi\int_0^4 x\,dx = \pi\left[\frac{x^2}{2}\right]_0^4 = \pi\cdot 8$$</li>
+        </ol>
+        <p class="resultado-final">$V = 8\pi \approx 25.1327$ unidades cúbicas</p>
+      </article>
+
+      <article class="ejemplo">
+        <h3>Ejemplo XVI.2 — Arandelas: la región entre $y = \sqrt{x}$ y $y = x^2$ gira sobre el eje $x$</h3>
+        <ol>
+          <li>Puntos de corte: $\sqrt{x} = x^2 \Rightarrow x = x^4 \Rightarrow x(1 - x^3) = 0$, es decir $x = 0$ y $x = 1$.</li>
+          <li>En $[0, 1]$ la curva de arriba es $\sqrt{x}$ (radio exterior) y la de abajo es $x^2$ (radio interior).</li>
+          <li>Área de la arandela: $\pi\left[(\sqrt{x})^2 - (x^2)^2\right] = \pi\left(x - x^4\right)$.</li>
+          <li>Integramos: $$V = \pi\int_0^1 \left(x - x^4\right) dx = \pi\left[\frac{x^2}{2} - \frac{x^5}{5}\right]_0^1 = \pi\left(\frac12 - \frac15\right)$$</li>
+        </ol>
+        <p class="resultado-final">$\displaystyle V = \frac{3\pi}{10} \approx 0.9425$ unidades cúbicas</p>
+      </article>
+
+      <article class="ejemplo">
+        <h3>Ejemplo XVI.3 — Cascarones: la región bajo $y = x^2$, de $x = 0$ a $x = 2$, gira sobre el eje $y$</h3>
+        <ol>
+          <li>Los rectángulos verticales son paralelos al eje $y$, así que usamos cascarones: radio $x$, altura $x^2$.</li>
+          <li>Volumen del cascarón: $2\pi\cdot x\cdot x^2\,dx = 2\pi x^3\,dx$.</li>
+          <li>Integramos: $$V = 2\pi\int_0^2 x^3\,dx = 2\pi\left[\frac{x^4}{4}\right]_0^2 = 2\pi\cdot 4$$</li>
+          <li><strong>Comprobación con arandelas</strong> (integrando respecto a $y$, de $0$ a $4$): el radio exterior es $2$ y el interior es $x = \sqrt{y}$: $$V = \pi\int_0^4 \left(4 - y\right) dy = \pi\left[4y - \frac{y^2}{2}\right]_0^4 = \pi(16 - 8) = 8\pi \ ✔$$</li>
+        </ol>
+        <p class="resultado-final">$V = 8\pi \approx 25.1327$ unidades cúbicas</p>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

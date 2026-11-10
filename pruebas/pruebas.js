@@ -6,6 +6,28 @@
 const f = FUNCIONES;
 const PI = Math.PI;
 
+/**
+ * Mayor diferencia |F'(x) − f(x)| de un módulo (módulos 7 a 14), con una derivada
+ * numérica centrada en 7 puntos de cada intervalo. Si F es de verdad una
+ * antiderivada de f, el resultado es prácticamente 0.
+ * @param {number} modulo - Número del módulo en EJEMPLOS_INTEGRALES.
+ * @returns {number} El peor error relativo encontrado.
+ */
+function peorErrorDerivada(modulo) {
+  const h = 1e-6;
+  let peor = 0;
+  Object.keys(EJEMPLOS_INTEGRALES[modulo]).forEach(function (clave) {
+    const ej = EJEMPLOS_INTEGRALES[modulo][clave];
+    for (let i = 1; i <= 7; i++) {
+      const x = ej.xMin + ((ej.xMax - ej.xMin) * i) / 8;
+      const derivada = (ej.F(x + h) - ej.F(x - h)) / (2 * h);
+      const error = Math.abs(derivada - ej.f(x)) / Math.max(1, Math.abs(ej.f(x)));
+      peor = Math.max(peor, error);
+    }
+  });
+  return peor < 1e-4 ? 0 : peor; // por debajo de 1e-4 es ruido de la derivada numérica
+}
+
 /** Lista de pruebas: [ejemplo, descripción, valor esperado, valor obtenido] */
 const PRUEBAS = [
   ['I.1', 'L₄ de x² en [0, 2]', 1.75, sumaIzquierda(f.cuadrado.f, 0, 2, 4)],
@@ -27,7 +49,35 @@ const PRUEBAS = [
   ['V.1', '∫ (3x² − 2x + 1) en [0, 2]', 6, valorExacto(FUNCIONES_AREA.polinomio.F, 0, 2)],
   ['V.4', 'Área entre 2x y x² (Simpson n = 1000)', 1.3333,
     simpson(function (x) { return Math.abs(2 * x - x * x); }, 0, 2, 1000)],
-  ['VI.5', 'F(2) − F(0) de x³/3 − x', 0.6667, valorExacto(EJEMPLOS_DIRECTA['VI.5'].F, 0, 2)]
+  ['VI.5', 'F(2) − F(0) de x³/3 − x', 0.6667, valorExacto(EJEMPLOS_DIRECTA['VI.5'].F, 0, 2)],
+
+  // Módulos 7 a 14: F'(x) = f(x) en todos los ejemplos del visualizador (se espera error 0)
+  ['VII', "Sustitución: F' = f en los 3 ejemplos", 0, peorErrorDerivada(7)],
+  ['VIII', "Exponenciales: F' = f en los 3 ejemplos", 0, peorErrorDerivada(8)],
+  ['IX', "Logarítmicas: F' = f en los 3 ejemplos", 0, peorErrorDerivada(9)],
+  ['X', "Trigonométricas: F' = f en los 3 ejemplos", 0, peorErrorDerivada(10)],
+  ['XI', "Trig. inversas: F' = f en los 3 ejemplos", 0, peorErrorDerivada(11)],
+  ['XII', "Hiperbólicas inversas: F' = f en los 3 ejemplos", 0, peorErrorDerivada(12)],
+  ['XIII', "Trinomio cuadrático: F' = f en los 3 ejemplos", 0, peorErrorDerivada(13)],
+  ['XIV', "Por partes: F' = f en los 3 ejemplos", 0, peorErrorDerivada(14)],
+
+  // Módulo 15: volúmenes por secciones (Simpson n = 1000 sobre A(x))
+  ['XV.1', 'Círculo, triángulos equiláteros: 4√3/3', 2.3094,
+    simpson(function (x) { return Math.sqrt(3) * (1 - x * x); }, -1, 1, 1000)],
+  ['XV.2', 'Bajo y = 1 − x²/4, cuadrados: 16/15', 1.0667,
+    simpson(function (x) { return Math.pow(1 - x * x / 4, 2); }, 0, 2, 1000)],
+  ['XV.3', 'Círculo, semicírculos: 2π/3', 2.0944,
+    simpson(function (x) { return (PI / 2) * (1 - x * x); }, -1, 1, 1000)],
+
+  // Módulo 16: sólidos de revolución
+  ['XVI.1', 'Discos: y = √x, [0, 4], eje x → 8π', 25.1327,
+    simpson(function (x) { return PI * x; }, 0, 4, 1000)],
+  ['XVI.2', 'Arandelas: √x y x², eje x → 3π/10', 0.9425,
+    simpson(function (x) { return PI * (x - Math.pow(x, 4)); }, 0, 1, 1000)],
+  ['XVI.3', 'Cascarones: y = x², [0, 2], eje y → 8π', 25.1327,
+    simpson(function (x) { return 2 * PI * x * x * x; }, 0, 2, 1000)],
+  ['XVI.3', 'Mismo sólido por arandelas en y (comprobación)', 25.1327,
+    simpson(function (y) { return PI * (4 - y); }, 0, 4, 1000)]
 ];
 
 let aprobadas = 0;

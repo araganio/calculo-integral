@@ -5,28 +5,103 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>10. Integrales Trigonométricas · Cálculo Integral</title>
 
+  <!-- Librerías externas (CDN): KaTeX para fórmulas y Plotly para gráficas -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
 
+  <!-- Código propio -->
   <link rel="stylesheet" href="../../assets/css/styles.css">
   <script defer src="../../assets/js/modulos.js"></script>
   <script defer src="../../assets/js/layout.js"></script>
+  <script defer src="../../assets/js/visualizador.js"></script>
+  <script defer src="../../assets/js/ejemplos-integrales.js"></script>
+  <script defer src="../../assets/js/antiderivadas.js"></script>
 </head>
 <body data-raiz="../../" data-modulo="10">
-  <!-- Módulo en construcción: se desarrollará en la Fase 2 -->
   <main>
     <header class="cabecera-modulo">
-      <p class="migas">Módulo 10 · Fase 2</p>
+      <p class="migas">Módulo 10 · Fase 2 · Integral indefinida</p>
       <h1>Integrales Trigonométricas</h1>
+      <p>Integrales de potencias de seno, coseno y tangente. Con identidades trigonométricas y una sustitución se reducen a integrales directas.</p>
+      <nav class="indice-secciones" aria-label="Secciones del módulo">
+        <a href="#teoria">1. Teoría</a>
+        <a href="#visualizador">2. Visualizador</a>
+        <a href="#ejemplos">3. Ejemplos resueltos</a>
+      </nav>
     </header>
 
-    <section class="seccion placeholder">
-      <div class="icono">∫</div>
-      <h2>Integrales Trigonométricas</h2>
-      <div class="mensaje-proximamente">Próximamente - Fase 2</div>
-      <p>Este módulo se desarrollará en la Fase 2 del proyecto, con teoría, un visualizador interactivo y ejemplos resueltos paso a paso.</p>
-      <p>Adelanto de la fórmula clave: $\int \sin u\,du = -\cos u + C$</p>
+    <!-- ===================== 1. TEORÍA ===================== -->
+    <section id="teoria" class="seccion">
+      <h2><span class="paso">1</span> Teoría</h2>
+      <p>Fórmulas de partida:</p>
+      <div class="caja-formula">$$\int \sin u\,du = -\cos u + C \qquad \int \cos u\,du = \sin u + C \qquad \int \tan u\,du = -\ln|\cos u| + C$$</div>
+      <h3>Estrategias</h3>
+      <ul>
+        <li><strong>Potencia par</strong> de seno o coseno: baja el grado con las identidades
+          $$\sin^2 x = \frac{1 - \cos 2x}{2}, \qquad \cos^2 x = \frac{1 + \cos 2x}{2}$$</li>
+        <li><strong>Potencia impar</strong>: separa un factor y usa $\sin^2 x + \cos^2 x = 1$ para que quede $u = \cos x$ (o $u = \sin x$) con su derivada.</li>
+        <li><strong>Tangente</strong>: $\tan x = \dfrac{\sin x}{\cos x}$ y se usa la sustitución $u = \cos x$.</li>
+      </ul>
+      <div class="nota"><strong>Cuidado con el signo:</strong> si $u = \cos x$, entonces $du = -\sin x\,dx$. Ese signo menos es el error más común.</div>
+    </section>
+
+    <!-- ===================== 2. VISUALIZADOR ===================== -->
+    <section id="visualizador" class="seccion">
+      <h2><span class="paso">2</span> <span>Visualizador interactivo: $f(x)$ y su antiderivada $F(x) + C$</span></h2>
+      <p>Compara $f$ con $F$: donde $F$ tiene un máximo o mínimo, $f$ cruza el eje $x$ (pendiente cero). Mueve el punto para verlo con la tangente.</p>
+      <div class="visualizador">
+        <div id="controles" class="controles">
+          <div class="control">
+            <label for="control-ejemplo">Ejemplo a graficar</label>
+            <select id="control-ejemplo"></select>
+          </div>
+          <div class="control">
+            <label for="control-c">Constante C = <span id="valor-c" class="valor-deslizador"></span></label>
+            <input id="control-c" type="range" min="-10" max="10" step="0.5" value="0">
+          </div>
+          <div class="control">
+            <label><input id="control-familia" type="checkbox" checked> Mostrar la familia F(x) + C</label>
+          </div>
+          <div class="control">
+            <label for="control-x">Punto para comparar pendientes: x = <span id="valor-x" class="valor-deslizador"></span></label>
+            <input id="control-x" type="range" min="0" max="100" step="1" value="50">
+            <span class="ayuda">La recta tangente a F en ese punto tiene pendiente f(x).</span>
+          </div>
+        </div>
+        <div>
+          <div id="grafica" class="grafica" role="img" aria-label="Gráfica de f(x) y de su antiderivada F(x) + C"></div>
+          <div id="resultados" class="resultados"></div>
+          <p id="formula-exacta"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 3. EJEMPLOS ===================== -->
+    <section id="ejemplos" class="seccion">
+      <h2><span class="paso">3</span> Ejemplos resueltos paso a paso</h2>
+
+      <article class="ejemplo">
+        <h3>Ejemplo X.1 — $\displaystyle\int \sin^2 x\,dx$</h3>
+        <ol>
+          <li>Bajamos el grado con la identidad del ángulo doble: $$\sin^2 x = \frac{1 - \cos 2x}{2}$$</li>
+          <li>Integramos término a término: $$\int \frac{1 - \cos 2x}{2}\,dx = \frac{x}{2} - \frac12\cdot\frac{\sin 2x}{2}$$</li>
+          <li>Resultado: $\displaystyle\int \sin^2 x\,dx = \frac{x}{2} - \frac{\sin 2x}{4} + C$.</li>
+          <li>Comprobación: $\dfrac{d}{dx}\left(\dfrac{x}{2} - \dfrac{\sin 2x}{4}\right) = \dfrac{1 - \cos 2x}{2} = \sin^2 x$ ✔</li>
+        </ol>
+        <p class="resultado-final">$\displaystyle \frac{x}{2} - \frac{\sin 2x}{4} + C$</p>
+      </article>
+      <article class="ejemplo">
+        <h3>Ejemplo X.2 — $\displaystyle\int \sin x\,\cos^2 x\,dx$</h3>
+        <ol>
+          <li>Elegimos $u = \cos x$, entonces $du = -\sin x\,dx$ y $\sin x\,dx = -du$.</li>
+          <li>Sustituimos: $$-\int u^2\,du = -\frac{u^3}{3}$$</li>
+          <li>Volvemos a $x$: $\displaystyle\int \sin x\cos^2 x\,dx = -\frac{\cos^3 x}{3} + C$.</li>
+          <li>Comprobación: $\dfrac{d}{dx}\left(-\dfrac{\cos^3 x}{3}\right) = -\cos^2 x\cdot(-\sin x) = \sin x\cos^2 x$ ✔</li>
+        </ol>
+        <p class="resultado-final">$\displaystyle -\frac{\cos^3 x}{3} + C$</p>
+      </article>
     </section>
   </main>
 </body>

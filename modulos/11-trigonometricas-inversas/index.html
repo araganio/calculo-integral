@@ -5,28 +5,103 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>11. Trigonométricas Inversas · Cálculo Integral</title>
 
+  <!-- Librerías externas (CDN): KaTeX para fórmulas y Plotly para gráficas -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
 
+  <!-- Código propio -->
   <link rel="stylesheet" href="../../assets/css/styles.css">
   <script defer src="../../assets/js/modulos.js"></script>
   <script defer src="../../assets/js/layout.js"></script>
+  <script defer src="../../assets/js/visualizador.js"></script>
+  <script defer src="../../assets/js/ejemplos-integrales.js"></script>
+  <script defer src="../../assets/js/antiderivadas.js"></script>
 </head>
 <body data-raiz="../../" data-modulo="11">
-  <!-- Módulo en construcción: se desarrollará en la Fase 3 -->
   <main>
     <header class="cabecera-modulo">
-      <p class="migas">Módulo 11 · Fase 3</p>
+      <p class="migas">Módulo 11 · Fase 3 · Integral indefinida</p>
       <h1>Trigonométricas Inversas</h1>
+      <p>Tres integrales muy comunes tienen como resultado una función trigonométrica inversa: arcsen, arctan y arcsec.</p>
+      <nav class="indice-secciones" aria-label="Secciones del módulo">
+        <a href="#teoria">1. Teoría</a>
+        <a href="#visualizador">2. Visualizador</a>
+        <a href="#ejemplos">3. Ejemplos resueltos</a>
+      </nav>
     </header>
 
-    <section class="seccion placeholder fase-3-placeholder">
-      <div class="icono">∫</div>
-      <h2>Trigonométricas Inversas</h2>
-      <div class="mensaje-proximamente">Próximamente - Fase 3</div>
-      <p>Este módulo se desarrollará en la Fase 3 del proyecto, con teoría, un visualizador interactivo y ejemplos resueltos paso a paso.</p>
-      <p>Adelanto de la fórmula clave: $\int \frac{du}{\sqrt{a^2-u^2}} = \arcsin\frac{u}{a} + C$</p>
+    <!-- ===================== 1. TEORÍA ===================== -->
+    <section id="teoria" class="seccion">
+      <h2><span class="paso">1</span> Teoría</h2>
+      <p>Con $a > 0$ y $u = g(x)$:</p>
+      <div class="caja-formula">$$\int \frac{du}{\sqrt{a^2 - u^2}} = \arcsin\frac{u}{a} + C \qquad \int \frac{du}{a^2 + u^2} = \frac{1}{a}\arctan\frac{u}{a} + C$$
+        $$\int \frac{du}{u\sqrt{u^2 - a^2}} = \frac{1}{a}\operatorname{arcsec}\frac{|u|}{a} + C$$</div>
+      <h3>Cómo usarlas</h3>
+      <ol>
+        <li>Identifica la forma: $a^2 - u^2$ bajo una raíz, $a^2 + u^2$ en el denominador, o $u\sqrt{u^2 - a^2}$.</li>
+        <li>Saca $a$ (la raíz del número) y $u$ (lo que acompaña a la variable).</li>
+        <li>Calcula $du$ y compensa las constantes que falten.</li>
+        <li>Aplica la fórmula y regresa a $x$.</li>
+      </ol>
+      <div class="nota"><strong>Dominio:</strong> $\dfrac{1}{\sqrt{a^2-u^2}}$ solo existe para $|u| < a$; por eso la gráfica de $\arcsin$ termina en $\pm 1$.</div>
+    </section>
+
+    <!-- ===================== 2. VISUALIZADOR ===================== -->
+    <section id="visualizador" class="seccion">
+      <h2><span class="paso">2</span> <span>Visualizador interactivo: $f(x)$ y su antiderivada $F(x) + C$</span></h2>
+      <p>La antiderivada de $\frac{1}{1+x^2}$ es $\arctan x$: una curva que se aplana en $\pm\frac{\pi}{2}$. Mira cómo la pendiente de la tangente (que es $f$) tiende a cero en los extremos.</p>
+      <div class="visualizador">
+        <div id="controles" class="controles">
+          <div class="control">
+            <label for="control-ejemplo">Ejemplo a graficar</label>
+            <select id="control-ejemplo"></select>
+          </div>
+          <div class="control">
+            <label for="control-c">Constante C = <span id="valor-c" class="valor-deslizador"></span></label>
+            <input id="control-c" type="range" min="-10" max="10" step="0.5" value="0">
+          </div>
+          <div class="control">
+            <label><input id="control-familia" type="checkbox" checked> Mostrar la familia F(x) + C</label>
+          </div>
+          <div class="control">
+            <label for="control-x">Punto para comparar pendientes: x = <span id="valor-x" class="valor-deslizador"></span></label>
+            <input id="control-x" type="range" min="0" max="100" step="1" value="50">
+            <span class="ayuda">La recta tangente a F en ese punto tiene pendiente f(x).</span>
+          </div>
+        </div>
+        <div>
+          <div id="grafica" class="grafica" role="img" aria-label="Gráfica de f(x) y de su antiderivada F(x) + C"></div>
+          <div id="resultados" class="resultados"></div>
+          <p id="formula-exacta"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 3. EJEMPLOS ===================== -->
+    <section id="ejemplos" class="seccion">
+      <h2><span class="paso">3</span> Ejemplos resueltos paso a paso</h2>
+
+      <article class="ejemplo">
+        <h3>Ejemplo XI.1 — $\displaystyle\int \frac{dx}{\sqrt{4 - x^2}}$</h3>
+        <ol>
+          <li>Tiene la forma $\sqrt{a^2 - u^2}$ con $a = 2$ y $u = x$ (así $du = dx$).</li>
+          <li>Aplicamos la fórmula del arcoseno: $$\int \frac{dx}{\sqrt{4 - x^2}} = \arcsin\frac{x}{2} + C$$</li>
+          <li>Comprobación: $\dfrac{d}{dx}\arcsin\dfrac{x}{2} = \dfrac{1/2}{\sqrt{1 - x^2/4}} = \dfrac{1}{\sqrt{4 - x^2}}$ ✔</li>
+        </ol>
+        <p class="resultado-final">$\displaystyle \arcsin\frac{x}{2} + C$</p>
+      </article>
+      <article class="ejemplo">
+        <h3>Ejemplo XI.2 — $\displaystyle\int \frac{dx}{9 + 4x^2}$</h3>
+        <ol>
+          <li>Tiene la forma $a^2 + u^2$ con $a = 3$ y $u = 2x$, así $du = 2\,dx$ y $dx = \tfrac12\,du$.</li>
+          <li>Sustituimos: $$\frac12\int \frac{du}{9 + u^2}$$</li>
+          <li>Fórmula del arcotangente: $$\frac12\cdot\frac13\arctan\frac{u}{3} = \frac16\arctan\frac{2x}{3}$$</li>
+          <li>Comprobación: $\dfrac{d}{dx}\left(\dfrac16\arctan\dfrac{2x}{3}\right) = \dfrac16\cdot\dfrac{2/3}{1 + 4x^2/9} = \dfrac{1}{9 + 4x^2}$ ✔</li>
+        </ol>
+        <p class="resultado-final">$\displaystyle \frac16\arctan\frac{2x}{3} + C$</p>
+      </article>
     </section>
   </main>
 </body>

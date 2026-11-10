@@ -5,28 +5,115 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>14. Integración por Partes · Cálculo Integral</title>
 
+  <!-- Librerías externas (CDN): KaTeX para fórmulas y Plotly para gráficas -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
 
+  <!-- Código propio -->
   <link rel="stylesheet" href="../../assets/css/styles.css">
   <script defer src="../../assets/js/modulos.js"></script>
   <script defer src="../../assets/js/layout.js"></script>
+  <script defer src="../../assets/js/visualizador.js"></script>
+  <script defer src="../../assets/js/ejemplos-integrales.js"></script>
+  <script defer src="../../assets/js/antiderivadas.js"></script>
 </head>
 <body data-raiz="../../" data-modulo="14">
-  <!-- Módulo en construcción: se desarrollará en la Fase 3 -->
   <main>
     <header class="cabecera-modulo">
-      <p class="migas">Módulo 14 · Fase 3</p>
+      <p class="migas">Módulo 14 · Fase 3 · Integral indefinida</p>
       <h1>Integración por Partes</h1>
+      <p>Es la "regla del producto al revés": sirve para integrar productos de funciones de distinto tipo, como $x\,e^x$, $x\cos x$ o $x\ln x$.</p>
+      <nav class="indice-secciones" aria-label="Secciones del módulo">
+        <a href="#teoria">1. Teoría</a>
+        <a href="#visualizador">2. Visualizador</a>
+        <a href="#ejemplos">3. Ejemplos resueltos</a>
+      </nav>
     </header>
 
-    <section class="seccion placeholder fase-3-placeholder">
-      <div class="icono">∫</div>
-      <h2>Integración por Partes</h2>
-      <div class="mensaje-proximamente">Próximamente - Fase 3</div>
-      <p>Este módulo se desarrollará en la Fase 3 del proyecto, con teoría, un visualizador interactivo y ejemplos resueltos paso a paso.</p>
-      <p>Adelanto de la fórmula clave: $\int u\,dv = uv - \int v\,du$</p>
+    <!-- ===================== 1. TEORÍA ===================== -->
+    <section id="teoria" class="seccion">
+      <h2><span class="paso">1</span> Teoría</h2>
+      <p>De la regla del producto $\,(uv)' = u'v + uv'\,$ se obtiene:</p>
+      <div class="caja-formula">$$\int u\,dv = u\,v - \int v\,du$$</div>
+      <h3>Cómo elegir $u$ y $dv$ (regla LIATE)</h3>
+      <p>Elige como $u$ la primera función que aparezca en este orden:</p>
+      <p style="text-align:center"><strong>L</strong>ogarítmica · <strong>I</strong>nversa trigonométrica · <strong>A</strong>lgebraica · <strong>T</strong>rigonométrica · <strong>E</strong>xponencial</p>
+      <ul>
+        <li>$dv$ debe ser algo que sepas integrar fácilmente.</li>
+        <li>Se espera que $\int v\,du$ sea <strong>más simple</strong> que la integral original.</li>
+        <li>A veces hay que aplicar la fórmula dos veces.</li>
+      </ul>
+      <div class="nota"><strong>Ejemplo de mala elección:</strong> en $\int x\,e^x\,dx$ si tomas $u = e^x$ y $dv = x\,dx$ la integral se complica ($\int \frac{x^2}{2}e^x\,dx$). Con $u = x$ (algebraica) todo se simplifica.</div>
+    </section>
+
+    <!-- ===================== 2. VISUALIZADOR ===================== -->
+    <section id="visualizador" class="seccion">
+      <h2><span class="paso">2</span> <span>Visualizador interactivo: $f(x)$ y su antiderivada $F(x) + C$</span></h2>
+      <p>Cada ejemplo es un producto. Observa que $F$ no se parece a $f$: la integración por partes cambia la forma de la función, por eso la comprobación derivando es tan importante.</p>
+      <div class="visualizador">
+        <div id="controles" class="controles">
+          <div class="control">
+            <label for="control-ejemplo">Ejemplo a graficar</label>
+            <select id="control-ejemplo"></select>
+          </div>
+          <div class="control">
+            <label for="control-c">Constante C = <span id="valor-c" class="valor-deslizador"></span></label>
+            <input id="control-c" type="range" min="-10" max="10" step="0.5" value="0">
+          </div>
+          <div class="control">
+            <label><input id="control-familia" type="checkbox" checked> Mostrar la familia F(x) + C</label>
+          </div>
+          <div class="control">
+            <label for="control-x">Punto para comparar pendientes: x = <span id="valor-x" class="valor-deslizador"></span></label>
+            <input id="control-x" type="range" min="0" max="100" step="1" value="50">
+            <span class="ayuda">La recta tangente a F en ese punto tiene pendiente f(x).</span>
+          </div>
+        </div>
+        <div>
+          <div id="grafica" class="grafica" role="img" aria-label="Gráfica de f(x) y de su antiderivada F(x) + C"></div>
+          <div id="resultados" class="resultados"></div>
+          <p id="formula-exacta"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 3. EJEMPLOS ===================== -->
+    <section id="ejemplos" class="seccion">
+      <h2><span class="paso">3</span> Ejemplos resueltos paso a paso</h2>
+
+      <article class="ejemplo">
+        <h3>Ejemplo XIV.1 — $\displaystyle\int x\,e^x\,dx$</h3>
+        <ol>
+          <li>Por LIATE: $u = x$ (algebraica) y $dv = e^x\,dx$.</li>
+          <li>Entonces $du = dx$ y $v = e^x$.</li>
+          <li>Aplicamos la fórmula: $$\int x\,e^x\,dx = x\,e^x - \int e^x\,dx = x\,e^x - e^x$$</li>
+          <li>Comprobación: $\dfrac{d}{dx}\big[(x-1)e^x\big] = e^x + (x-1)e^x = x\,e^x$ ✔</li>
+        </ol>
+        <p class="resultado-final">$\displaystyle (x - 1)\,e^x + C$</p>
+      </article>
+      <article class="ejemplo">
+        <h3>Ejemplo XIV.2 — $\displaystyle\int x\cos x\,dx$</h3>
+        <ol>
+          <li>Por LIATE: $u = x$ (algebraica) y $dv = \cos x\,dx$.</li>
+          <li>Entonces $du = dx$ y $v = \sin x$.</li>
+          <li>Aplicamos la fórmula: $$\int x\cos x\,dx = x\sin x - \int \sin x\,dx = x\sin x + \cos x$$</li>
+          <li>Comprobación: $\dfrac{d}{dx}\big[x\sin x + \cos x\big] = \sin x + x\cos x - \sin x = x\cos x$ ✔</li>
+        </ol>
+        <p class="resultado-final">$\displaystyle x\sin x + \cos x + C$</p>
+      </article>
+      <article class="ejemplo">
+        <h3>Ejemplo XIV.3 — $\displaystyle\int x\ln x\,dx$</h3>
+        <ol>
+          <li>Por LIATE la logarítmica va primero: $u = \ln x$ y $dv = x\,dx$.</li>
+          <li>Entonces $du = \dfrac{dx}{x}$ y $v = \dfrac{x^2}{2}$.</li>
+          <li>Aplicamos la fórmula: $$\int x\ln x\,dx = \frac{x^2}{2}\ln x - \int \frac{x^2}{2}\cdot\frac{1}{x}\,dx = \frac{x^2}{2}\ln x - \frac12\int x\,dx$$</li>
+          <li>Integramos lo que queda: $\dfrac12\cdot\dfrac{x^2}{2} = \dfrac{x^2}{4}$.</li>
+          <li>Comprobación: $\dfrac{d}{dx}\left[\dfrac{x^2}{2}\ln x - \dfrac{x^2}{4}\right] = x\ln x + \dfrac{x}{2} - \dfrac{x}{2} = x\ln x$ ✔</li>
+        </ol>
+        <p class="resultado-final">$\displaystyle \frac{x^2}{2}\ln x - \frac{x^2}{4} + C$</p>
+      </article>
     </section>
   </main>
 </body>

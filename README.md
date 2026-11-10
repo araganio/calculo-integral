@@ -19,14 +19,16 @@ Plataforma web educativa e interactiva de **Cálculo Integral**: teoría, visual
 | 4 | Regla de Simpson | 1 | ✅ Disponible |
 | 5 | Integral Definida y Área bajo la Curva | 1 | ✅ Disponible |
 | 6 | Integración Directa | 1 | ✅ Disponible |
-| 7 | Integración por Sustitución | 2 | 🔜 Próximamente |
-| 8 | Integrales Exponenciales | 2 | 🔜 Próximamente |
-| 9 | Integrales Logarítmicas | 2 | 🔜 Próximamente |
-| 10 | Integrales Trigonométricas | 2 | 🔜 Próximamente |
-| 11 | Trigonométricas Inversas | 3 | 🔜 Próximamente |
-| 12 | Hiperbólicas Inversas | 3 | 🔜 Próximamente |
-| 13 | Trinomio Cuadrático | 3 | 🔜 Próximamente |
-| 14 | Integración por Partes | 3 | 🔜 Próximamente |
+| 7 | Integración por Sustitución | 2 | ✅ Disponible |
+| 8 | Integrales Exponenciales | 2 | ✅ Disponible |
+| 9 | Integrales Logarítmicas | 2 | ✅ Disponible |
+| 10 | Integrales Trigonométricas | 2 | ✅ Disponible |
+| 11 | Trigonométricas Inversas | 3 | ✅ Disponible |
+| 12 | Hiperbólicas Inversas | 3 | ✅ Disponible |
+| 13 | Trinomio Cuadrático | 3 | ✅ Disponible |
+| 14 | Integración por Partes | 3 | ✅ Disponible |
+| 15 | Volúmenes por Secciones | 3 | ✅ Disponible |
+| 16 | Sólidos de Revolución | 3 | ✅ Disponible |
 
 Cada módulo desarrollado tiene tres secciones, siempre en el mismo orden:
 
@@ -42,23 +44,27 @@ Cada módulo desarrollado tiene tres secciones, siempre en el mismo orden:
 
 ```
 /
-├── index.html                  # Inicio: presentación, fases y tarjetas de los 14 módulos
+├── index.html                  # Inicio: presentación, fases y tarjetas de los 16 módulos
 ├── README.md
 ├── assets/
 │   ├── css/styles.css          # Estilos globales, variables CSS y media queries
 │   └── js/
-│       ├── modulos.js          # Lista única de los 14 módulos (fuente de verdad del menú)
+│       ├── modulos.js          # Lista única de los 16 módulos (fuente de verdad del menú)
 │       ├── layout.js           # Encabezado, menú, pie, Anterior/Siguiente y render de KaTeX
 │       ├── funciones.js        # Catálogo de funciones: f, F (antiderivada), LaTeX y dominio
+│       ├── ejemplos-integrales.js # Catálogo de integrales indefinidas de los módulos 7-14
+│       ├── antiderivadas.js    # Visualizador compartido f(x) y F(x) + C de los módulos 7-14
 │       ├── metodos-numericos.js# Funciones puras: sumas de Riemann, trapecio, punto medio, Simpson...
 │       └── visualizador.js     # Controles, validación, resultados y dibujo comunes (módulos 1-4)
 ├── modulos/
 │   ├── 01-sumas-riemann/       # index.html (contenido) + script.js (visualizador)
 │   ├── ...
 │   ├── 06-integracion-directa/
-│   ├── 07-sustitucion/         # solo index.html: placeholder "Próximamente - Fase 2"
+│   ├── 07-sustitucion/         # index.html (usa antiderivadas.js, sin script propio)
 │   ├── ...
-│   └── 14-integracion-por-partes/
+│   ├── 14-integracion-por-partes/
+│   ├── 15-volumenes-secciones/ # index.html + script.js (sólido 3D y suma de secciones)
+│   └── 16-solidos-revolucion/  # index.html + script.js (discos, arandelas, cascarones en 3D)
 └── pruebas/                    # Página que compara los métodos con los valores verificados
 ```
 
@@ -73,6 +79,7 @@ Cada módulo desarrollado tiene tres secciones, siempre en el mismo orden:
 | `funciones.js` | Catálogo de funciones de ejemplo. Cada una trae `f`, su antiderivada `F`, su LaTeX y su dominio. Así **no se usa `eval()`**. | No |
 | `metodos-numericos.js` | Funciones **puras**: reciben `f, a, b, n` y devuelven un número (`sumaIzquierda`, `sumaDerecha`, `puntoMedio`, `trapecio`, `simpson`, `valorExacto`, `errorAbsoluto`, `errorRelativo`, `parabolaPorTresPuntos`...). | No |
 | `visualizador.js` | Partes compartidas por los visualizadores de los módulos 1 a 4: crear y leer los controles, validar los límites y el dominio, mostrar resultados y errores, llenar la tabla y dibujar con Plotly. | Sí |
+| `ejemplos-integrales.js` y `antiderivadas.js` | El catálogo de integrales de los módulos 7 a 14 (cada una con su antiderivada verificada derivando) y el visualizador común que grafica f(x) y F(x) + C con la recta tangente. | Solo `antiderivadas.js` |
 | `modulos/XX/script.js` | Lógica propia de cada módulo: decide qué figuras dibujar (rectángulos, trapecios, parábolas, áreas...). | Sí |
 
 ### Flujo de un visualizador
@@ -181,5 +188,5 @@ Como permite el enunciado, usé herramientas de inteligencia artificial (Claude 
 - Preparé la sustentación en video, incluida la explicación del ejercicio.
 
 **Apoyo de la IA**
-- Generó la base del código, los visualizadores y la documentación.
-- Los resultados numéricos se verificaron con la página [`pruebas/`](pruebas/index.html) (19 de 19 coinciden con los valores esperados).
+- Generó la base del código, los visualizadores y la documentación, y también la actualización que agregó los módulos 7 a 16 (hasta sólidos de revolución).
+- Los resultados numéricos se verificaron con la página [`pruebas/`](pruebas/index.html) (34 de 34 coinciden con los valores esperados: los métodos numéricos, que F′ = f en las integrales de los módulos 7 a 14 y los volúmenes de los módulos 15 y 16).

@@ -5,28 +5,115 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>13. Trinomio Cuadrático · Cálculo Integral</title>
 
+  <!-- Librerías externas (CDN): KaTeX para fórmulas y Plotly para gráficas -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
 
+  <!-- Código propio -->
   <link rel="stylesheet" href="../../assets/css/styles.css">
   <script defer src="../../assets/js/modulos.js"></script>
   <script defer src="../../assets/js/layout.js"></script>
+  <script defer src="../../assets/js/visualizador.js"></script>
+  <script defer src="../../assets/js/ejemplos-integrales.js"></script>
+  <script defer src="../../assets/js/antiderivadas.js"></script>
 </head>
 <body data-raiz="../../" data-modulo="13">
-  <!-- Módulo en construcción: se desarrollará en la Fase 3 -->
   <main>
     <header class="cabecera-modulo">
-      <p class="migas">Módulo 13 · Fase 3</p>
+      <p class="migas">Módulo 13 · Fase 3 · Integral indefinida</p>
       <h1>Trinomio Cuadrático</h1>
+      <p>Cuando el denominador (o la raíz) tiene un trinomio $ax^2 + bx + c$, se completa el cuadrado para llevarlo a una de las formas de los módulos 11 y 12.</p>
+      <nav class="indice-secciones" aria-label="Secciones del módulo">
+        <a href="#teoria">1. Teoría</a>
+        <a href="#visualizador">2. Visualizador</a>
+        <a href="#ejemplos">3. Ejemplos resueltos</a>
+      </nav>
     </header>
 
-    <section class="seccion placeholder fase-3-placeholder">
-      <div class="icono">∫</div>
-      <h2>Trinomio Cuadrático</h2>
-      <div class="mensaje-proximamente">Próximamente - Fase 3</div>
-      <p>Este módulo se desarrollará en la Fase 3 del proyecto, con teoría, un visualizador interactivo y ejemplos resueltos paso a paso.</p>
-      <p>Adelanto de la fórmula clave: $ax^2+bx+c = a\left(x+\frac{b}{2a}\right)^2 + \left(c-\frac{b^2}{4a}\right)$</p>
+    <!-- ===================== 1. TEORÍA ===================== -->
+    <section id="teoria" class="seccion">
+      <h2><span class="paso">1</span> Teoría</h2>
+      <p><strong>Completar el cuadrado</strong> consiste en reescribir el trinomio como un binomio al cuadrado más una constante:</p>
+      <div class="caja-formula">$$x^2 + bx + c = \left(x + \frac{b}{2}\right)^2 + \left(c - \frac{b^2}{4}\right)$$</div>
+      <h3>Pasos</h3>
+      <ol>
+        <li>Si el coeficiente de $x^2$ no es 1, sácalo como factor (si es negativo, factoriza el signo menos).</li>
+        <li>Completa el cuadrado y llama $u = x + \frac{b}{2}$, con $du = dx$.</li>
+        <li>Según el signo del resultado, usa arcotangente ($u^2 + a^2$), arcoseno ($a^2 - u^2$ bajo raíz) o logaritmo ($u^2 - a^2$).</li>
+      </ol>
+      <div class="nota"><strong>Ojo:</strong> si el trinomio tiene raíces reales, también se puede resolver con fracciones parciales; las dos vías dan el mismo resultado.</div>
+    </section>
+
+    <!-- ===================== 2. VISUALIZADOR ===================== -->
+    <section id="visualizador" class="seccion">
+      <h2><span class="paso">2</span> <span>Visualizador interactivo: $f(x)$ y su antiderivada $F(x) + C$</span></h2>
+      <p>Observa que el trinomio desplaza el centro de la curva: en $\frac{1}{x^2+2x+5}$ el máximo está en $x = -1$, justo el valor que aparece al completar el cuadrado.</p>
+      <div class="visualizador">
+        <div id="controles" class="controles">
+          <div class="control">
+            <label for="control-ejemplo">Ejemplo a graficar</label>
+            <select id="control-ejemplo"></select>
+          </div>
+          <div class="control">
+            <label for="control-c">Constante C = <span id="valor-c" class="valor-deslizador"></span></label>
+            <input id="control-c" type="range" min="-10" max="10" step="0.5" value="0">
+          </div>
+          <div class="control">
+            <label><input id="control-familia" type="checkbox" checked> Mostrar la familia F(x) + C</label>
+          </div>
+          <div class="control">
+            <label for="control-x">Punto para comparar pendientes: x = <span id="valor-x" class="valor-deslizador"></span></label>
+            <input id="control-x" type="range" min="0" max="100" step="1" value="50">
+            <span class="ayuda">La recta tangente a F en ese punto tiene pendiente f(x).</span>
+          </div>
+        </div>
+        <div>
+          <div id="grafica" class="grafica" role="img" aria-label="Gráfica de f(x) y de su antiderivada F(x) + C"></div>
+          <div id="resultados" class="resultados"></div>
+          <p id="formula-exacta"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 3. EJEMPLOS ===================== -->
+    <section id="ejemplos" class="seccion">
+      <h2><span class="paso">3</span> Ejemplos resueltos paso a paso</h2>
+
+      <article class="ejemplo">
+        <h3>Ejemplo XIII.1 — $\displaystyle\int \frac{dx}{x^2 + 2x + 5}$</h3>
+        <ol>
+          <li>Completamos el cuadrado: $x^2 + 2x + 5 = (x + 1)^2 + 4$.</li>
+          <li>Sea $u = x + 1$ ($du = dx$) y $a = 2$: $$\int \frac{du}{u^2 + 4}$$</li>
+          <li>Fórmula del arcotangente: $$\frac12\arctan\frac{u}{2}$$</li>
+          <li>Volvemos a $x$: $\displaystyle\int \frac{dx}{x^2+2x+5} = \frac12\arctan\frac{x+1}{2} + C$.</li>
+          <li>Comprobación: $\dfrac{d}{dx}\left(\dfrac12\arctan\dfrac{x+1}{2}\right) = \dfrac12\cdot\dfrac{1/2}{1 + (x+1)^2/4} = \dfrac{1}{(x+1)^2 + 4}$ ✔</li>
+        </ol>
+        <p class="resultado-final">$\displaystyle \frac12\arctan\frac{x+1}{2} + C$</p>
+      </article>
+      <article class="ejemplo">
+        <h3>Ejemplo XIII.2 — $\displaystyle\int \frac{dx}{\sqrt{3 - 2x - x^2}}$</h3>
+        <ol>
+          <li>El coeficiente de $x^2$ es negativo: $3 - 2x - x^2 = -(x^2 + 2x) + 3 = -\big[(x+1)^2 - 1\big] + 3 = 4 - (x+1)^2$.</li>
+          <li>Sea $u = x + 1$ ($du = dx$) y $a = 2$: $$\int \frac{du}{\sqrt{4 - u^2}}$$</li>
+          <li>Fórmula del arcoseno: $$\arcsin\frac{u}{2}$$</li>
+          <li>Volvemos a $x$: $\displaystyle\int \frac{dx}{\sqrt{3-2x-x^2}} = \arcsin\frac{x+1}{2} + C$.</li>
+          <li>Dominio: $4 - (x+1)^2 > 0$ exige $-3 < x < 1$.</li>
+        </ol>
+        <p class="resultado-final">$\displaystyle \arcsin\frac{x+1}{2} + C$</p>
+      </article>
+      <article class="ejemplo">
+        <h3>Ejemplo XIII.3 — $\displaystyle\int \frac{dx}{x^2 - 4x + 3}$</h3>
+        <ol>
+          <li>Completamos el cuadrado: $x^2 - 4x + 3 = (x - 2)^2 - 1$.</li>
+          <li>Sea $u = x - 2$ ($du = dx$) y $a = 1$: $$\int \frac{du}{u^2 - 1}$$</li>
+          <li>Como $\dfrac{1}{u^2 - a^2} = -\dfrac{1}{a^2 - u^2}$, la fórmula del módulo 12 da $$\frac{1}{2a}\ln\left|\frac{u - a}{u + a}\right| = \frac12\ln\left|\frac{u - 1}{u + 1}\right|$$</li>
+          <li>Volvemos a $x$: $\displaystyle\int \frac{dx}{x^2-4x+3} = \frac12\ln\left|\frac{x - 3}{x - 1}\right| + C$.</li>
+          <li>Comprobación con fracciones parciales: $\dfrac{1}{(x-1)(x-3)} = \dfrac12\left(\dfrac{1}{x-3} - \dfrac{1}{x-1}\right)$ ✔</li>
+        </ol>
+        <p class="resultado-final">$\displaystyle \frac12\ln\left|\frac{x - 3}{x - 1}\right| + C$</p>
+      </article>
     </section>
   </main>
 </body>
