@@ -49,6 +49,14 @@
       </ul>
       <p>La integral definida es el límite de estas sumas cuando el número de rectángulos crece sin límite:</p>
       <div class="caja-formula">$$\int_a^b f(x)\,dx = \lim_{n\to\infty} \sum_{i=1}^{n} f(x_i^*)\,\Delta x$$</div>
+
+      <h3>Notación sigma y fórmulas de sumatorias</h3>
+      <p>El símbolo $\Sigma$ abrevia una suma: $\displaystyle\sum_{i=1}^{n} a_i = a_1 + a_2 + \cdots + a_n$. Por ejemplo $\displaystyle\sum_{i=1}^{8}(2i+1) = 3 + 5 + 7 + \cdots + 17 = 80$, y una constante se suma $n$ veces: $\displaystyle\sum_{k=1}^{10} 5 = 50$.</p>
+      <p><strong>Propiedades:</strong> $\sum (a_i + b_i) = \sum a_i + \sum b_i$ y $\sum c\,a_i = c\sum a_i$. <strong>Cuidado:</strong> $\sum a_i b_i \neq \big(\sum a_i\big)\big(\sum b_i\big)$ (la suma de productos no es el producto de las sumas).</p>
+      <div class="caja-formula">$$\sum_{i=1}^{n} 1 = n \qquad \sum_{i=1}^{n} i = \frac{n(n+1)}{2} \qquad \sum_{i=1}^{n} i^2 = \frac{n(n+1)(2n+1)}{6} \qquad \sum_{i=1}^{n} i^3 = \left[\frac{n(n+1)}{2}\right]^2$$</div>
+      <p>Verificación con $n = 7$: $\displaystyle\sum_{i=1}^{7}(i^2 + 1) = \frac{7\cdot 8\cdot 15}{6} + 7 = 140 + 7 = 147$.</p>
+      <p><strong>Cómo escribir una suma con sigma:</strong> $1 + 3 + 5 + \cdots + 199 = \displaystyle\sum_{i=1}^{100}(2i - 1)$ &nbsp;·&nbsp; $2 + 4 + 6 + \cdots + 200 = \displaystyle\sum_{i=1}^{100} 2i$ &nbsp;·&nbsp; $2 - 4 + 6 - 8 + \cdots - 200 = \displaystyle\sum_{i=1}^{100} 2i\,(-1)^{i+1}$.</p>
+      <p>Estas fórmulas permiten calcular la integral como <strong>límite exacto</strong> (ver el ejemplo I.3): se escribe la suma derecha con $x_i = a + i\,\Delta x$, se reemplazan $\sum i$ y $\sum i^2$ y se hace $n \to \infty$.</p>
       <div class="nota">Si $f$ es <strong>creciente</strong>, la suma izquierda se queda corta ($L_n$ subestima) y la derecha se pasa ($R_n$ sobreestima). Si $f$ es decreciente ocurre lo contrario. Compruébalo con $x^2$ y con $1/x$ en el visualizador.</div>
     </section>
 
@@ -110,6 +118,21 @@
             $$\int_1^3 \frac{dx}{x} = \big[\ln x\big]_1^3 = \ln 3 - \ln 1 = \ln 3 \approx 1.0986$$</li>
         </ol>
         <p class="resultado-final">Como $1/x$ es decreciente, ahora $L_5 = 1.2436$ se pasa y $R_5 = 0.9769$ se queda corta. $M_5 = 1.0929$ es la mejor (error $0.0058$).</p>
+      </article>
+
+      <article class="ejemplo">
+        <h3>Ejemplo I.3 — La integral como límite: $\displaystyle\int_2^3 (x^2 - 2x)\,dx$ con la suma derecha</h3>
+        <ol>
+          <li>Ancho: $\Delta x = \dfrac{3 - 2}{n} = \dfrac{1}{n}$. Con los extremos derechos, $x_i = 2 + \dfrac{i}{n}$.</li>
+          <li>Evaluamos: $$f(x_i) = \left(2 + \frac{i}{n}\right)^2 - 2\left(2 + \frac{i}{n}\right) = 4 + \frac{4i}{n} + \frac{i^2}{n^2} - 4 - \frac{2i}{n} = \frac{2i}{n} + \frac{i^2}{n^2}$$</li>
+          <li>Armamos la suma de Riemann: $$\sum_{i=1}^{n} f(x_i)\,\Delta x = \sum_{i=1}^{n}\left(\frac{2i}{n^2} + \frac{i^2}{n^3}\right) = \frac{2}{n^2}\sum_{i=1}^{n} i + \frac{1}{n^3}\sum_{i=1}^{n} i^2$$</li>
+          <li>Reemplazamos las fórmulas de sumatorias: $$\frac{2}{n^2}\cdot\frac{n(n+1)}{2} + \frac{1}{n^3}\cdot\frac{n(n+1)(2n+1)}{6} = \frac{n+1}{n} + \frac{(n+1)(2n+1)}{6n^2}$$</li>
+          <li>Reescribimos: $\left(1 + \dfrac{1}{n}\right) + \left(\dfrac{1}{3} + \dfrac{1}{2n} + \dfrac{1}{6n^2}\right)$.</li>
+          <li>Hacemos $n \to \infty$: los términos con $n$ en el denominador tienden a $0$: $$\lim_{n\to\infty}\left[\left(1 + \frac1n\right) + \left(\frac13 + \frac{1}{2n} + \frac{1}{6n^2}\right)\right] = 1 + \frac13 = \frac43$$</li>
+          <li>Comprobación con el TFC: $\displaystyle\int_2^3 (x^2 - 2x)\,dx = \left[\frac{x^3}{3} - x^2\right]_2^3 = 0 - \left(\frac83 - 4\right) = \frac43$ ✔</li>
+        </ol>
+        <p class="resultado-final">$\displaystyle\int_2^3 (x^2 - 2x)\,dx = \frac{4}{3} \approx 1.3333$</p>
+        <p>Para ver el mismo comportamiento en el visualizador, usa la suma derecha de $x^2$ en $[2, 3]$ y sube $n$: la aproximación se acerca al valor exacto.</p>
       </article>
     </section>
   </main>

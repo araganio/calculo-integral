@@ -175,5 +175,14 @@ const EJEMPLOS_DIRECTA = {
     latexF: '\\frac{x^3}{3}-x',
     dominioMin: -3,
     xMax: 3
+  },
+  'VI.6': {
+    nombre: 'VI.6:  (x² + 4x − 4)/√x',
+    latex: '\\frac{x^2+4x-4}{\\sqrt{x}}',
+    f: function (x) { return (x * x + 4 * x - 4) / Math.sqrt(x); },
+    F: function (x) { return (2 / 5) * Math.pow(x, 2.5) + (8 / 3) * Math.pow(x, 1.5) - 8 * Math.sqrt(x); },
+    latexF: '\\frac{2}{5}x^{5/2}+\\frac{8}{3}x^{3/2}-8\\sqrt{x}',
+    dominioMin: 0.1,
+    xMax: 4
   }
 };

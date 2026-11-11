@@ -193,4 +193,4 @@ Como permite el enunciado, usé herramientas de inteligencia artificial (Claude 
 
 **Apoyo de la IA**
 - Generó la base del código, los visualizadores y la documentación, y también la actualización que agregó los módulos 7 a 20 (hasta sólidos de revolución).
-- Los resultados numéricos se verificaron con la página [`pruebas/`](pruebas/index.html) (38 de 38 coinciden con los valores esperados: los métodos numéricos, que F′ = f en las integrales de los módulos 7 a 18 y los volúmenes de los módulos 19 y 20).
+- Los resultados numéricos se verificaron con la página [`pruebas/`](pruebas/index.html) (42 de 42 coinciden con los valores esperados: los métodos numéricos, que F′ = f en las integrales de los módulos 7 a 18 y los volúmenes de los módulos 19 y 20).

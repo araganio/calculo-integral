@@ -50,6 +50,21 @@ const PRUEBAS = [
   ['V.4', 'Área entre 2x y x² (Simpson n = 1000)', 1.3333,
     simpson(function (x) { return Math.abs(2 * x - x * x); }, 0, 2, 1000)],
   ['VI.5', 'F(2) − F(0) de x³/3 − x', 0.6667, valorExacto(EJEMPLOS_DIRECTA['VI.5'].F, 0, 2)],
+  ['I.3', 'Límite de R_n de x² − 2x en [2, 3] (n = 10⁶) = 4/3', 1.3333,
+    sumaDerecha(function (x) { return x * x - 2 * x; }, 2, 3, 1000000)],
+  ['I.3', 'Fórmula cerrada (n+1)/n + (n+1)(2n+1)/(6n²) con n = 10⁶', 1.3333,
+    (1000001 / 1000000) + (1000001 * 2000001) / (6 * 1e12)],
+  ['VI.6', 'F(4) − F(1) de (x² + 4x − 4)/√x contra Simpson n = 1000', simpson(EJEMPLOS_DIRECTA['VI.6'].f, 1, 4, 1000),
+    valorExacto(EJEMPLOS_DIRECTA['VI.6'].F, 1, 4)],
+  ['VI.6', "F' = f en (x² + 4x − 4)/√x (error 0)", 0, (function () {
+    const ej = EJEMPLOS_DIRECTA['VI.6'];
+    let peor = 0;
+    for (let x = 0.5; x <= 4; x += 0.25) {
+      const h = 1e-6;
+      peor = Math.max(peor, Math.abs((ej.F(x + h) - ej.F(x - h)) / (2 * h) - ej.f(x)));
+    }
+    return peor;
+  })()],
 
   // Módulos 7 a 14: F'(x) = f(x) en todos los ejemplos del visualizador (se espera error 0)
   ['VII', "Sustitución: F' = f en los 3 ejemplos", 0, peorErrorDerivada(7)],

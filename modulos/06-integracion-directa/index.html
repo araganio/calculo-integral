@@ -130,6 +130,18 @@
         </ol>
         <p class="resultado-final">$\displaystyle \frac{x^3}{3} - x + C$</p>
       </article>
+
+      <article class="ejemplo">
+        <h3>Ejemplo VI.6 — $\displaystyle\int \frac{x^2 + 4x - 4}{\sqrt{x}}\,dx$</h3>
+        <ol>
+          <li>Separamos la fracción dividiendo cada término entre $\sqrt{x} = x^{1/2}$:
+            $$\int \left(x^{3/2} + 4x^{1/2} - 4x^{-1/2}\right) dx$$</li>
+          <li>Integramos con $\int x^n dx = \dfrac{x^{n+1}}{n+1}$:
+            $$\frac{x^{5/2}}{5/2} + 4\cdot\frac{x^{3/2}}{3/2} - 4\cdot\frac{x^{1/2}}{1/2} = \frac{2}{5}x^{5/2} + \frac{8}{3}x^{3/2} - 8x^{1/2}$$</li>
+          <li>Comprobación: $\dfrac{d}{dx}\left(\dfrac{2}{5}x^{5/2} + \dfrac{8}{3}x^{3/2} - 8x^{1/2}\right) = x^{3/2} + 4x^{1/2} - 4x^{-1/2} = \dfrac{x^2 + 4x - 4}{\sqrt{x}}$ ✔</li>
+        </ol>
+        <p class="resultado-final">$\displaystyle \frac{2}{5}x^{5/2} + \frac{8}{3}x^{3/2} - 8\sqrt{x} + C$</p>
+      </article>
     </section>
   </main>
 </body>
